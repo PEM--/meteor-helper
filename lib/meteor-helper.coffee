@@ -1,4 +1,5 @@
 MeteorHelperView = require './meteor-helper-view'
+{BufferedProcess} = require 'atom'
 
 module.exports =
   configDefaults:
