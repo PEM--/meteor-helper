@@ -1,5 +1,7 @@
 # meteor-helper package
 
-Use Meteor and Meteorite inside Atom.io.
+**WORK IN PROGRESS**
 
-![A screenshot of your spankin' package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+Use [Meteor](https://www.meteor.com/) and Meteorite inside [Atom.io](https://atom.io/).
+
+![Awesome](https://avatars3.githubusercontent.com/u/227831?s=460)
