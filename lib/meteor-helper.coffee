@@ -1,7 +1,7 @@
 MeteorHelperView = require './meteor-helper-view'
-{BufferedProcess} = require 'atom'
 
 module.exports =
+  # Define a default installation path for Meteorite
   configDefaults:
     meteorPath: '/usr/local/bin/mrt'
 
