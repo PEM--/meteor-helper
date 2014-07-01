@@ -21,4 +21,4 @@ class MeteorHelperView extends View
     if @hasParent()
       @detach()
     else
-      atom.workspaceView.append(this)
+      atom.workspaceView.append @
