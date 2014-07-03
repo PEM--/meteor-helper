@@ -2,10 +2,13 @@
 fs = require 'fs'
 
 module.exports =
+
 class MeteorHelperView extends View
   @content: ->
-    @div class: 'meteor-helper tool-panel panel-bottom', =>
-      # @div class: 'panel-heading affix', 'Meteor output'
+    @div class: 'meteor-helper tool-panel panel-bottom text-smaller', =>
+      @div class: 'panel-heading', =>
+        @div class: 'title', 'Meteor'
+        @div class: 'status', 'OK'
       @div class: 'panel-body padded', 'tesing'
 
   initialize: (serializeState) ->
@@ -30,5 +33,6 @@ class MeteorHelperView extends View
       @meteorPath = atom.config.get 'meteor-helper.meteorPath'
       # Check if the command is installed on the system
       fs.exists @meteorPath, (exists) ->
-        (atom.workspaceView.find '.meteor-helper .panel-body').html 'It exists ?'
+        atom.workspaceView.find '.meteor-helper .panel-body'
+          .html 'It exists ?'
         console.log 'It exists ?'
