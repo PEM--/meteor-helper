@@ -9,7 +9,8 @@ class MeteorHelperView extends View
       @div class: 'panel-heading status-bar tool-panel', =>
         @div class: 'status-bar-left pull-left meteor-logo'
         @div class: 'status-bar-right pull-right', =>
-          @i class: 'fa fa-check success faa-spin animated'
+          # TODO @i class: 'fa fa-check success faa-spin animated'
+          @i class: 'fa fa-check success'
       @div class: 'panel-body'
 
   initialize: (serializeState) ->
@@ -35,5 +36,4 @@ class MeteorHelperView extends View
       # Check if the command is installed on the system
       fs.exists @meteorPath, (exists) ->
         atom.workspaceView.find '.meteor-helper .panel-body'
-          .html 'It exists ?'
-        console.log 'It exists ?'
+          .html 'Meteor is launched'
