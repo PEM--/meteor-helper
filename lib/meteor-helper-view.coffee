@@ -6,10 +6,11 @@ module.exports =
 class MeteorHelperView extends View
   @content: ->
     @div class: 'meteor-helper tool-panel panel-bottom text-smaller', =>
-      @div class: 'panel-heading', =>
-        @div class: 'title', 'Meteor'
-        @div class: 'status', 'OK'
-      @div class: 'panel-body padded', 'tesing'
+      @div class: 'panel-heading status-bar tool-panel', =>
+        @div class: 'status-bar-left pull-left meteor-logo', 'Meteor'
+        @div class: 'status-bar-right pull-right', =>
+          @i class: 'fa fa-check success faa-spin animated'
+      @div class: 'panel-body'
 
   initialize: (serializeState) ->
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()

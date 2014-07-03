@@ -1,8 +1,29 @@
+// See https://github.com/atom/atom-dark-ui/blob/master/stylesheets/ui-variables.less
 @import "ui-variables";
+// Import font-awesome from bower
+@import "../bower_components/font-awesome/less/font-awesome.less";
+// Import font-awesome-animation from bower
+@import "../bower_components/font-awesome-animation/dist/font-awesome-animation.css";
 
+// Define specific style for Meteor package
 .meteor-helper {
   -webkit-flex: 0.25;
   overflow: scroll;
+
+  .success {
+    color: @text-color-success;
+  }
+
+  .panel-heading {
+    background-color: @tool-panel-background-color;
+    background-image: none;
+    padding: 0 15px;
+
+    .meteor-logo {
+      background-image: url("../assets/meteor_logo.svg");
+    }
+  }
+
   .panel-body {
     div {
       margin: 5px;
