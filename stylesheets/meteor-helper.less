@@ -12,7 +12,7 @@
 
 // Define specific style for Meteor package
 .meteor-helper {
-  height: 80px;
+  height: 150px;
 
   .panel-heading {
     background-color: @tool-panel-background-color;
@@ -32,8 +32,13 @@
   }
 
   .panel-body {
+    padding: 5px 15px;
     div {
-      margin: 5px;
+      -webkit-flex: 0.25;
+      overflow: auto;
+    }
+    h3 {
+      margin: 0;
     }
   }
 }

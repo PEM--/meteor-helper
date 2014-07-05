@@ -5,7 +5,7 @@ module.exports =
 
 class MeteorHelperView extends View
   @content: ->
-    @div outlet: 'meteorPane', click: 'onClick', class: 'meteor-helper
+    @div click: 'onClick', class: 'meteor-helper
       tool-panel panel-bottom text-smaller', =>
       @div class: 'panel-heading status-bar tool-panel', =>
         @div class: 'status-bar-left pull-left meteor-logo'
@@ -20,6 +20,8 @@ class MeteorHelperView extends View
     window.velocity = require '../bower_components/velocity/jquery.velocity.js'
     # Display Meteor's pane
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
+    # Pane is opened by default
+    @paneOpened = true
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -28,8 +30,13 @@ class MeteorHelperView extends View
   destroy: -> @detach()
 
   onClick: (evt) =>
-    @meteorDetails.html '<h3>Clicked</h3>'
-    window.meteorPane = @
+    height = if @paneOpened then 25 else 150
+    @paneOpened = not @paneOpened
+    @velocity
+      properties:
+        height: height
+      options:
+        duration: 300
 
   toggle: ->
     console.log 'MeteorHelperView was toggled!'
@@ -48,7 +55,20 @@ class MeteorHelperView extends View
             text-warning"></i>'
           @meteorDetails.html "<h3>Meteor command not found: #{@meteorPath}
             </h3>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
+            <p>You can override these setting in this package preference.</p>
             <p>You can override these setting in this package preference.</p>"
+          @meteorDetails.scrollTop @meteorDetails[0].scrollHeight
+          window.meteorDetails = @meteorDetails
           return
         # Set text in the panel
         @meteorDetails.html 'Meteor is launched'
