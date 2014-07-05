@@ -2,6 +2,6 @@
 
 :warning: **WORK IN PROGRESS** :warning:
 
-Use [Meteor](https://www.meteor.com/) and [Meteorite](https://atmospherejs.com/) inside [Atom.io](https://atom.io/).
+:rocket: Launch [Meteor](https://www.meteor.com/) and [Meteorite](https://atmospherejs.com/) inside [Atom.io](https://atom.io/).
 
 ![Awesome](https://avatars3.githubusercontent.com/u/227831?s=460)

@@ -8,6 +8,7 @@ module.exports =
   meteorHelperView: null
 
   activate: (state) ->
+    # Create the main's view
     @meteorHelperView = new MeteorHelperView state.meteorHelperViewState
 
   deactivate: ->

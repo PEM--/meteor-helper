@@ -3,13 +3,16 @@
   "main": "./lib/meteor-helper",
   "version": "0.0.0",
   "description": "Launch Meteor from Atom.io",
-  "activationEvents": ["meteor-helper:toggle"],
+  "activationEvents": [
+    "meteor-helper:toggle"
+  ],
   "repository": "https://github.com/atom/meteor-helper",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "ansi-to-html": "^0.2.0"
+    "ansi-to-html": "^0.2.0",
+    "velocity-animate": "^0.4.1"
   }
 }
