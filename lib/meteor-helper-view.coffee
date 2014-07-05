@@ -16,12 +16,13 @@ class MeteorHelperView extends View
 
   initialize: (serializeState) ->
     # Import Velocity into the main window's context
+    # Trick its importation so that it understands that jQuery is present
     window.jQuery = $
     window.velocity = require '../bower_components/velocity/jquery.velocity.js'
     # Display Meteor's pane
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
-    # Pane is opened by default
-    @paneOpened = true
+    # Pane is closed by default
+    @paneOpened = false
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -29,6 +30,7 @@ class MeteorHelperView extends View
   # Tear down any state and detach
   destroy: -> @detach()
 
+  # On click, make the pane appearing or disappearing
   onClick: (evt) =>
     height = if @paneOpened then 25 else 150
     @paneOpened = not @paneOpened
@@ -36,15 +38,34 @@ class MeteorHelperView extends View
       properties:
         height: height
       options:
-        duration: 300
+        duration: 100
 
+  # Force appearing of the pane
+  forceAppear: =>
+    @paneOpened = true
+    @velocity
+      properties:
+        height: 150
+      options:
+        duration: 100
+
+  # Launch or kill the pane and the Meteor process
   toggle: ->
     console.log 'MeteorHelperView was toggled!'
     if @hasParent()
-      @detach()
+      # Fade out the pane before destroying it
+      @velocity 'fadeOut', duration: 100
+      setTimeout =>
+        @detach()
+      , 100
     else
       # Add the view to the current workspace
       atom.workspaceView.prependToBottom @
+      # Clear height if it has been modified formerly
+      @height 25
+      @paneOpened = false
+      # Fade the panel in
+      @velocity 'fadeIn', duration: 100, display: 'block'
       # Get the current assigned value for Meteorite
       @meteorPath = atom.config.get 'meteor-helper.meteorPath'
       # Check if the command is installed on the system
@@ -69,6 +90,8 @@ class MeteorHelperView extends View
             <p>You can override these setting in this package preference.</p>"
           @meteorDetails.scrollTop @meteorDetails[0].scrollHeight
           window.meteorDetails = @meteorDetails
+          # When an error is detecte, force appearing of the pane
+          @forceAppear()
           return
         # Set text in the panel
         @meteorDetails.html 'Meteor is launched'
