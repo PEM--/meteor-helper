@@ -3,15 +3,17 @@ fs = require 'fs'
 
 module.exports =
 
+
+
 class MeteorHelperView extends View
   @content: ->
-    @div class: 'meteor-helper tool-panel panel-bottom text-smaller', =>
+    @div click: 'onClick', class: 'meteor-helper tool-panel panel-bottom
+      text-smaller', =>
       @div class: 'panel-heading status-bar tool-panel', =>
         @div class: 'status-bar-left pull-left meteor-logo'
-        @div class: 'status-bar-right pull-right', =>
-          # TODO @i class: 'fa fa-check success faa-spin animated'
-          @i class: 'fa fa-check success'
-      @div class: 'panel-body'
+        @div outlet: 'meteorStatus', class: 'status-bar-right pull-right', =>
+          @span class: 'loading loading-spinner-tiny inline-block'
+      @div outlet: 'meteorDetails', class: 'panel-body'
 
   initialize: (serializeState) ->
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
@@ -23,7 +25,12 @@ class MeteorHelperView extends View
   destroy: ->
     @detach()
 
+  onClick: ->
+    console.log 'Cliky'
+
   toggle: ->
+    # TODO
+    window.meteor = @
     console.log 'MeteorHelperView was toggled!'
     if @hasParent()
       @detach()
@@ -34,6 +41,8 @@ class MeteorHelperView extends View
       # Get the current assigned value for Meteorite
       @meteorPath = atom.config.get 'meteor-helper.meteorPath'
       # Check if the command is installed on the system
-      fs.exists @meteorPath, (exists) ->
-        atom.workspaceView.find '.meteor-helper .panel-body'
-          .html 'Meteor is launched'
+      fs.exists @meteorPath, (exists) =>
+        # Set text in the panel
+        @meteorDetails.html 'Meteor is launched'
+        @meteorStatus.html '<i class="fa fa-gear
+          text-hightlight faa-spin animated"></i>'
