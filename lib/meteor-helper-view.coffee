@@ -5,6 +5,10 @@ path = require 'path'
 module.exports =
 
 class MeteorHelperView extends View
+  # Meteor's process
+  @process: null
+
+  # Build the pane
   @content: ->
     @div click: 'onClick', class: 'meteor-helper
       tool-panel panel-bottom text-smaller', =>
@@ -15,15 +19,16 @@ class MeteorHelperView extends View
       @div class: 'panel-body', =>
         @div outlet: 'meteorDetails', class: 'meteor-details'
 
+  # Initialize the current package
   initialize: (serializeState) ->
     # Import Velocity into the main window's context
     # Trick its importation so that it understands that jQuery is present
     window.jQuery = $
     window.velocity = require '../bower_components/velocity/jquery.velocity.js'
-    # Display Meteor's pane
-    atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
     # Pane is closed by default
     @isPaneOpened = false
+    # Display Meteor's pane
+    atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
 
   # Returns an object that can be retrieved when package is activated
   serialize: ->
@@ -74,11 +79,17 @@ class MeteorHelperView extends View
   # Launch or kill the pane and the Meteor process
   toggle: ->
     console.log 'MeteorHelperView was toggled!'
+    # Check if Meteor is launched
     if @hasParent()
       # Fade out the pane before destroying it
       @velocity 'fadeOut', duration: 100
+      # FIXME This is just a hack. It seems that 'complete' callback in
+      #  Velocity have an issue.
       setTimeout =>
+        # Detach pane from the editor's view
         @detach()
+        # Kill Meteor's process if it's running
+        @process?.kill()
       , 100
     else
       @setWatingMsg 'Launching Meteor...'
@@ -106,5 +117,17 @@ class MeteorHelperView extends View
           unless isPrjCreated
             @setErrorMsg '<h3>No Meteor project found.</h3>'
             return
-          # Set text in the panel
-          @setNormalMsg 'Meteor is launched'
+          @process = new BufferedProcess
+            command: @meteorPath
+            options: cwd: atom.project.path
+            stdout: @stdOut
+            stderr: @stdErr
+            exit: @stdErr
+          # Set launching text if launch is successful
+          @setNormalMsg ''
+
+  stdOut: (output) =>
+    console.log output
+
+  stdErr: (error) =>
+    console.log error
