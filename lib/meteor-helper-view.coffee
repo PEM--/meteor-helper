@@ -1,6 +1,7 @@
 {View, BufferedProcess, $} = require 'atom'
 fs = require 'fs'
 path = require 'path'
+Converter = new (require 'ansi-to-html')()
 
 module.exports =
 
@@ -127,7 +128,7 @@ class MeteorHelperView extends View
           @setNormalMsg ''
 
   stdOut: (output) =>
-    console.log output
+    @meteorDetails.append Converter.toHtml output
 
   stdErr: (error) =>
-    console.log error
+    @meteorDetails.append Converter.toHtml error
