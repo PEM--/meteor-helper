@@ -28,6 +28,8 @@ class MeteorHelperView extends View
     window.velocity = require '../bower_components/velocity/jquery.velocity.js'
     # Pane is closed by default
     @isPaneOpened = false
+    # Current pane status
+    @paneIconStatus = null
     # Display Meteor's pane
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
 
@@ -47,36 +49,6 @@ class MeteorHelperView extends View
       options:
         duration: 100
 
-  # Force appearing of the pane
-  forceAppear: =>
-    @isPaneOpened = true
-    @velocity
-      properties:
-        height: 150
-      options:
-        duration: 100
-
-  # Set an error message
-  setErrorMsg: (msg) ->
-    @meteorStatus.html '<i class="fa fa-warning faa-flash animated
-      text-warning"></i>'
-    @meteorDetails.html msg
-    @meteorDetails.scrollTop @meteorDetails[0].scrollHeight
-    window.meteorDetails = @meteorDetails
-    # When an error is detected, force appearing of the pane
-    @forceAppear()
-
-  # Set a waiting message
-  setWatingMsg: (msg) ->
-    @meteorStatus.html '<i class="fa fa-gear text-highlight faa-spin
-      animated"></i>'
-    @meteorDetails.html msg
-
-  # Set a normal message
-  setNormalMsg: (msg) ->
-    @meteorStatus.html '<i class="fa fa-check text-success"></i>'
-    @meteorDetails.html msg
-
   # Launch or kill the pane and the Meteor process
   toggle: ->
     console.log 'MeteorHelperView was toggled!'
@@ -93,7 +65,7 @@ class MeteorHelperView extends View
         @process?.kill()
       , 100
     else
-      @setWatingMsg 'Launching Meteor...'
+      @setMsg 'waiting', 'Launching Meteor...'
       # Fade the panel in
       @velocity 'fadeIn', duration: 100, display: 'block'
       # Clear height if it has been modified formerly
@@ -107,7 +79,7 @@ class MeteorHelperView extends View
       fs.exists @meteorPath, (isCliDefined) =>
         # Set an error message if Meteor CLI cannot be found
         unless isCliDefined
-          @setErrorMsg "<h3>Meteor command not found: #{@meteorPath}</h3>
+          @setMsg 'error', "<h3>Meteor command not found: #{@meteorPath}</h3>
             <p>You can override these setting in this package preference.</p>"
           return
         # Chef if the current project owns a Meteor project
@@ -116,19 +88,64 @@ class MeteorHelperView extends View
           console.log 'isPrjCreated', isPrjCreated
           # Set an error message if no Meteor project is found
           unless isPrjCreated
-            @setErrorMsg '<h3>No Meteor project found.</h3>'
+            @setMsg 'error', '<h3>No Meteor project found.</h3>'
             return
           @process = new BufferedProcess
             command: @meteorPath
             options: cwd: atom.project.path
-            stdout: @stdOut
-            stderr: @stdErr
-            exit: @stdErr
-          # Set launching text if launch is successful
-          @setNormalMsg ''
+            stdout: @paneAddInfo
+            stderr: @paneAddErr
+            exit: @paneAddExit
+          # Wait for the appropriate launching message
+          @setMsg 'waiting', ''
 
-  stdOut: (output) =>
-    @meteorDetails.append Converter.toHtml output
+  # Force appearing of the pane
+  forceAppear: =>
+    @isPaneOpened = true
+    @velocity
+      properties: height: 150
+      options: duration: 100
 
-  stdErr: (error) =>
-    @meteorDetails.append Converter.toHtml error
+  # Set message in pane's details section
+  setMsg: (status, msg, isAppended = false) ->
+    switch status
+      when 'normal'
+        unless @paneIconStatus is 'normal'
+          @meteorStatus.html '<i class="fa fa-check text-success"></i>'
+      when 'waiting'
+        unless @paneIconStatus is 'waiting'
+          @meteorStatus.html '<i class="fa fa-gear text-highlight faa-spin
+            animated"></i>'
+      else
+        unless @paneIconStatus is 'error'
+          @meteorStatus.html '<i class="fa fa-warning faa-flash animated
+            text-warning"></i>'
+        # When an error is detected, force appearing of the pane
+        @forceAppear()
+    if isAppended
+      @meteorDetails.append msg
+    else
+      @meteorDetails.html msg
+    # TODO Ensure scrolling
+    @meteorDetails.scrollTop @meteorDetails[0].scrollHeight
+    window.meteorDetails = @meteorDetails
+
+  paneAddInfo: (output) =>
+    console.log '** INFO **', output
+    msg = '<br>' + Converter.toHtml output
+    @setMsg 'waiting', msg, true
+
+  paneAddErr: (output) =>
+    console.log '** ERROR **', output
+    msg = '<br>' + Converter.toHtml output
+    @setMsg 'error', msg, true
+
+  paneAddExit: (code) =>
+    console.log '** EXIT **', code
+    # Nullify current process
+    @process.kill()
+    @process = null
+    # Display the exit status
+    msg = "<br><p class='text-error'>Meteor has exited with " + \
+      "status code: #{code}</p>"
+    @setMsg 'error', msg, true
