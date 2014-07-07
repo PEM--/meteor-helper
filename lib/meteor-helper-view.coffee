@@ -6,10 +6,13 @@ Converter = new (require 'ansi-to-html')()
 module.exports =
 
 class MeteorHelperView extends View
+
   # Meteor's process
   @process: null
 
-  # Build the pane
+  # Public: Build the pane
+  #
+  # Returns: main's pane widget
   @content: ->
     @div click: 'onClick', class: 'meteor-helper
       tool-panel panel-bottom text-smaller', =>
@@ -20,7 +23,11 @@ class MeteorHelperView extends View
       @div class: 'panel-body', =>
         @div outlet: 'meteorDetails', class: 'meteor-details'
 
-  # Initialize the current package
+  # Public: Initialize the current package
+  #
+  # serializeState - The [description] as {[type]}.
+  #
+  # Returns: `undefined`
   initialize: (serializeState) ->
     # Import Velocity into the main window's context
     # Trick its importation so that it understands that jQuery is present
@@ -33,13 +40,21 @@ class MeteorHelperView extends View
     # Display Meteor's pane
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
 
-  # Returns an object that can be retrieved when package is activated
+  # Public: Returns an object that can be retrieved when package is activated
+  #
+  # Returns: `undefined`
   serialize: ->
 
-  # Tear down any state and detach
+  # Public: Tear down any state and detach
+  #
+  # Returns: `undefined`
   destroy: -> @detach()
 
-  # On click, make the pane appearing or disappearing
+  # Public: On click, make the pane appearing or disappearing
+  #
+  # evt - The event as EventType.
+  #
+  # Returns: `undefined`
   onClick: (evt) =>
     height = if @isPaneOpened then 25 else 150
     @isPaneOpened = not @isPaneOpened
@@ -49,7 +64,9 @@ class MeteorHelperView extends View
       options:
         duration: 100
 
-  # Launch or kill the pane and the Meteor process
+  # Public: Launch or kill the pane and the Meteor process
+  #
+  # Returns: `undefined`
   toggle: ->
     # Check if Meteor is launched
     if @hasParent()
@@ -98,14 +115,22 @@ class MeteorHelperView extends View
           # Wait for the appropriate launching message
           @setMsg 'WAITING', ''
 
-  # Force appearing of the pane
+  # Public: Force appearing of the pane
+  #
+  # Returns: `undefined`
   forceAppear: =>
     @isPaneOpened = true
     @velocity
       properties: height: 150
       options: duration: 100
 
-  # Set message in pane's details section
+  # Public: Set message in pane's details section
+  #
+  # status      - The status as String.
+  # msg         - The message as String.
+  # isAppended  - A flag for appending or replacing as Boolean.
+  #
+  # Returns: `undefined`
   setMsg: (status, msg, isAppended = false) ->
     switch status
       when 'INFO'
@@ -141,7 +166,11 @@ class MeteorHelperView extends View
     [E|e]rror
   ///
 
-  # Add info in the pane and determine which type of info to add
+  # Public: Add info in the pane and determine which type of info to add.
+  #
+  # output - The Meteor's CLI output as String.
+  #
+  # Returns: `undefined`
   paneAddInfo: (output) =>
     console.log '@PATTERN_METEOR_OK', @PATTERN_METEOR_OK
     # Check for OK patterns
@@ -152,12 +181,20 @@ class MeteorHelperView extends View
     msg = "<p>#{Converter.toHtml output}</p>"
     @setMsg status, msg, true
 
-  # Add error in the pane
+  # Public: Add error in the pane
+  #
+  # output - The Meteor's output as String.
+  #
+  # Returns: `undefined`
   paneAddErr: (output) =>
     msg = "<p class='text-error'>#{Converter.toHtml output}</p>"
     @setMsg 'ERROR', msg, true
 
-  # Add exit status in the pane
+  # Public: Add exit status in the pane.
+  #
+  # code - The Meteor's exit code as Integer.
+  #
+  # Returns: `undefined`
   paneAddExit: (code) =>
     # Nullify current process
     @process.kill()

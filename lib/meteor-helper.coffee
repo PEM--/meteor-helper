@@ -7,12 +7,23 @@ module.exports =
 
   meteorHelperView: null
 
+  # Public: Activate plugin
+  #
+  # state - The state of the plugin as {[type]}.
+  #
+  # Returns: `undefined`
   activate: (state) ->
     # Create the main's view
     @meteorHelperView = new MeteorHelperView state.meteorHelperViewState
 
+  # Public: Deactivate plugin.
+  #
+  # Returns: `undefined`
   deactivate: ->
     @meteorHelperView.destroy()
 
+  # Public: Serialize package state.
+  #
+  # Returns: Seriliazed package.
   serialize: ->
     meteorHelperViewState: @meteorHelperView.serialize()
