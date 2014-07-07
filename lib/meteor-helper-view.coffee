@@ -126,16 +126,16 @@ class MeteorHelperView extends View
       @meteorDetails.append msg
     else
       @meteorDetails.html msg
-    # TODO Ensure scrolling
-    #@meteorDetails.parent.height = @meteorDetails.height()
-    #@meteorDetails.scrollTop @meteorDetails[0].scrollHeight
+    # Ensure scrolling
     window.meteorDetails = @meteorDetails
+    console.log @meteorDetails.parent()
+    @meteorDetails.parent().scrollToBottom()
 
   paneAddInfo: (output) =>
     console.log '** INFO **', output
     pattern = /App running at: /g
     status = if output.match pattern then 'normal' else 'waiting'
-    msg = '<br>' + Converter.toHtml output
+    msg = "<p>#{Converter.toHtml output}</p>"
     @setMsg status, msg, true
 
   paneAddErr: (output) =>
