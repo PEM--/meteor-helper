@@ -51,7 +51,6 @@ class MeteorHelperView extends View
 
   # Launch or kill the pane and the Meteor process
   toggle: ->
-    console.log 'MeteorHelperView was toggled!'
     # Check if Meteor is launched
     if @hasParent()
       # Fade out the pane before destroying it
@@ -85,7 +84,6 @@ class MeteorHelperView extends View
         # Chef if the current project owns a Meteor project
         meteor_project_path = path.join atom.project.path, '.meteor'
         fs.exists meteor_project_path, (isPrjCreated) =>
-          console.log 'isPrjCreated', isPrjCreated
           # Set an error message if no Meteor project is found
           unless isPrjCreated
             @setMsg 'error', '<h3>No Meteor project found.</h3>'
@@ -127,24 +125,23 @@ class MeteorHelperView extends View
     else
       @meteorDetails.html msg
     # Ensure scrolling
-    window.meteorDetails = @meteorDetails
-    console.log @meteorDetails.parent()
     @meteorDetails.parent().scrollToBottom()
 
   paneAddInfo: (output) =>
-    console.log '** INFO **', output
-    pattern = /App running at: /g
+    pattern = ///
+      App.running.at:   # Classic start of Meteor
+      | remove.dep        # Removal of dependencies in Famono
+      | Scan.the.folder   # End of requirements in Famono
+    ///
     status = if output.match pattern then 'normal' else 'waiting'
     msg = "<p>#{Converter.toHtml output}</p>"
     @setMsg status, msg, true
 
   paneAddErr: (output) =>
-    console.log '** ERROR **', output
     msg = "<p class='text-error'>#{Converter.toHtml output}</p>"
     @setMsg 'error', msg, true
 
   paneAddExit: (code) =>
-    console.log '** EXIT **', code
     # Nullify current process
     @process.kill()
     @process = null
