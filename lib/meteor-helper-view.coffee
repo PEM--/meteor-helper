@@ -127,17 +127,20 @@ class MeteorHelperView extends View
     else
       @meteorDetails.html msg
     # TODO Ensure scrolling
-    @meteorDetails.scrollTop @meteorDetails[0].scrollHeight
+    #@meteorDetails.parent.height = @meteorDetails.height()
+    #@meteorDetails.scrollTop @meteorDetails[0].scrollHeight
     window.meteorDetails = @meteorDetails
 
   paneAddInfo: (output) =>
     console.log '** INFO **', output
+    pattern = /App running at: /g
+    status = if output.match pattern then 'normal' else 'waiting'
     msg = '<br>' + Converter.toHtml output
-    @setMsg 'waiting', msg, true
+    @setMsg status, msg, true
 
   paneAddErr: (output) =>
     console.log '** ERROR **', output
-    msg = '<br>' + Converter.toHtml output
+    msg = "<p class='text-error'>#{Converter.toHtml output}</p>"
     @setMsg 'error', msg, true
 
   paneAddExit: (code) =>
@@ -146,6 +149,6 @@ class MeteorHelperView extends View
     @process.kill()
     @process = null
     # Display the exit status
-    msg = "<br><p class='text-error'>Meteor has exited with " + \
-      "status code: #{code}</p>"
+    msg = "<p class='text-error'>Meteor has exited with
+      status code: #{code}</p>"
     @setMsg 'error', msg, true

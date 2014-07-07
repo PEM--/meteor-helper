@@ -33,9 +33,15 @@
   }
 
   .panel-body {
-    padding: 5px 15px;
-    -webkit-flex: 0.25;
-    overflow: auto;
+    // Avoid beeing to close to the pannel left and right border
+    margin: 0 15px;
+    // Ensure that the complete content is visible as its bottom is covered
+    //  by the regular status bar.
+    padding-bottom: 30px;
+    // Make its content scrollable
+    overflow: scroll;
+    height: inherit;
+    // Remove margin on h3 as they are used to display big warning text
     h3 {
       margin: 0;
     }
