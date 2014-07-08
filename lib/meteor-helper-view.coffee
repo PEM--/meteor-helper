@@ -33,7 +33,8 @@ class MeteorHelperView extends View
     # Import Velocity into the main window's context
     # Trick its importation so that it understands that jQuery is present
     window.jQuery = $
-    window.velocity = require 'velocity/jquery.velocity.js'
+    window.velocity = require '../node_modules/velocity-animate/' + \
+      'jquery.velocity.js'
     # Pane is closed by default
     @isPaneOpened = false
     # Current pane status
