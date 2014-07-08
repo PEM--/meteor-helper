@@ -6,7 +6,7 @@
   "activationEvents": [
     "meteor-helper:toggle"
   ],
-  "repository": "https://github.com/atom/meteor-helper",
+  "repository": "https://github.com/PEM--/meteor-helper",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
