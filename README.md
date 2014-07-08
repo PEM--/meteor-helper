@@ -2,4 +2,4 @@
 
 :rocket: Launch [Meteor](https://www.meteor.com/) and [Meteorite](https://atmospherejs.com/) inside [Atom.io](https://atom.io/).
 
-<iframe width="560" height="315" src="//www.youtube.com/embed/wgHDTwZy0w0" frameborder="0" allowfullscreen></iframe>
+![Meteor.js from Atom.io](https://raw.githubusercontent.com/PEM--/meteor-helper/master/assets/capture.png)
