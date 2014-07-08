@@ -5,6 +5,7 @@ Converter = new (require 'ansi-to-html')()
 
 module.exports =
 
+# Public: Main Meteor's view that extends the View prototype.
 class MeteorHelperView extends View
 
   # Meteor's process
@@ -172,7 +173,6 @@ class MeteorHelperView extends View
   #
   # Returns: `undefined`
   paneAddInfo: (output) =>
-    console.log '@PATTERN_METEOR_OK', @PATTERN_METEOR_OK
     # Check for OK patterns
     status = if output.match @PATTERN_METEOR_OK then 'INFO'
     # Check for error patterns
