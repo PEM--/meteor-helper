@@ -102,15 +102,23 @@ class MeteorHelperView extends View
             <p>You can override these setting in this package preference.</p>"
           return
         # Chef if the current project owns a Meteor project
-        meteor_project_path = path.join atom.project.path, '.meteor'
+        meteor_project_path = path.join atom.project.getPath(), '.meteor'
         fs.exists meteor_project_path, (isPrjCreated) =>
           # Set an error message if no Meteor project is found
           unless isPrjCreated
             @setMsg 'ERROR', '<h3>No Meteor project found.</h3>'
             return
+          # Tweek process path to circumvent Meteorite issue:
+          # https://github.com/oortcloud/meteorite/issues/203
+          process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
+            "latest/bin:#{process.env.PATH}"
+          # Launch Meteor
           @process = new BufferedProcess
             command: @meteorPath
-            options: cwd: atom.project.path
+            args: []
+            options:
+              cwd: atom.project.getPath()
+              env: process.env
             stdout: @paneAddInfo
             stderr: @paneAddErr
             exit: @paneAddExit
