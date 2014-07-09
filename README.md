@@ -1,6 +1,6 @@
 # Meteor-helper: Call Meteor from Atom.io
 
-:rocket: Launch [Meteor](https://www.meteor.com/) and [Meteorite](https://atmospherejs.com/) inside [Atom.io](https://atom.io/).
+:rocket: Launch [Meteor](https://www.meteor.com/) and [Meteorite](https://atmospherejs.com/) inside [Atom.io](https://atom.io/) :octocat:
 
 Either use [Atom.io](https://atom.io/) inner packaging tool or the following command line:
 ```
