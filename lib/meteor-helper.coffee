@@ -4,6 +4,7 @@ module.exports =
   # Define a default installation path for Meteorite
   configDefaults:
     meteorPath: '/usr/local/bin/mrt'
+    meteorPort: 3000
 
   meteorHelperView: null
 

@@ -81,6 +81,10 @@ class MeteorHelperView extends View
         @detach()
         # Kill Meteor's process if it's running
         @process?.kill()
+        # Sometimes Mongo get stuck, force exit it
+        new BufferedProcess
+          command: 'killall'
+          args: ['mongod']
       , 100
     else
       # Set an initial message before appending the panel
@@ -92,8 +96,9 @@ class MeteorHelperView extends View
       @velocity 'fadeIn', duration: 100, display: 'block'
       # Add the view to the current workspace
       atom.workspaceView.prependToBottom @
-      # Get the current assigned value for Meteorite
+      # Get the configured Meteor's path and port
       @meteorPath = atom.config.get 'meteor-helper.meteorPath'
+      @meteorPort = atom.config.get 'meteor-helper.meteorPort'
       # Check if the command is installed on the system
       fs.exists @meteorPath, (isCliDefined) =>
         # Set an error message if Meteor CLI cannot be found
@@ -108,6 +113,11 @@ class MeteorHelperView extends View
           unless isPrjCreated
             @setMsg 'ERROR', '<h3>No Meteor project found.</h3>'
             return
+          # Check if Meteor's port need to be configure
+          args = if @meteorPort is 3000 then [] else [
+              '--port'
+              String @meteorPort
+            ]
           # Tweek process path to circumvent Meteorite issue:
           # https://github.com/oortcloud/meteorite/issues/203
           process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
@@ -115,10 +125,11 @@ class MeteorHelperView extends View
           # Launch Meteor
           @process = new BufferedProcess
             command: @meteorPath
-            args: []
+            args: args
             options:
               cwd: atom.project.getPath()
               env: process.env
+              detached: true
             stdout: @paneAddInfo
             stderr: @paneAddErr
             exit: @paneAddExit
