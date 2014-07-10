@@ -8,3 +8,5 @@ apm install meteor-helper
 ```
 
 ![Meteor.js from Atom.io](https://raw.githubusercontent.com/PEM--/meteor-helper/master/assets/capture.png)
+
+:eyeglasses: More informations on my blog site: [Meteor.js from within Atom.io](http://pem-musing.blogspot.com/2014/07/meteorjs-from-within-atomio-full-stack.html)
