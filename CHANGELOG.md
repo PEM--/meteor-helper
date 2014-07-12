@@ -1,3 +1,7 @@
+## 0.6.0 - Kill process on exit
+* Small refactoring :cyclone:
+* Kill Meteor's process and subprocess (Mongo): Fix issue #3 :boom:
+
 ## 0.5.0 - Change port setting
 * Change the port on which Meteor is listening :ear:
 

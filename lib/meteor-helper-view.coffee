@@ -47,12 +47,14 @@ class MeteorHelperView extends View
   # Returns: `undefined`
   serialize: ->
 
-  # Public: Tear down any state and detach
+  # Public: Tear down any state and detach.
   #
   # Returns: `undefined`
-  destroy: -> @detach()
+  destroy: ->
+    @detach()
+    @_killMeteor()
 
-  # Public: On click, make the pane appearing or disappearing
+  # Public: On click, make the pane appearing or disappearing.
   #
   # evt - The event as EventType.
   #
@@ -66,7 +68,18 @@ class MeteorHelperView extends View
       options:
         duration: 100
 
-  # Public: Launch or kill the pane and the Meteor process
+  # Private: Kill Meteor's process and its subprocess (Mongo).
+  #
+  # Returns the [Description] as `undefined`.
+  _killMeteor: ->
+    # Kill Meteor's process if it's running
+    @process?.kill()
+    # Sometimes Mongo get stuck, force exit it
+    new BufferedProcess
+      command: 'killall'
+      args: ['mongod']
+
+  # Public: Launch or kill the pane and the Meteor process.
   #
   # Returns: `undefined`
   toggle: ->
@@ -80,11 +93,7 @@ class MeteorHelperView extends View
         # Detach pane from the editor's view
         @detach()
         # Kill Meteor's process if it's running
-        @process?.kill()
-        # Sometimes Mongo get stuck, force exit it
-        new BufferedProcess
-          command: 'killall'
-          args: ['mongod']
+        @_killMeteor()
       , 100
     else
       # Set an initial message before appending the panel
