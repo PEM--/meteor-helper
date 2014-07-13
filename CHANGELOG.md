@@ -1,3 +1,6 @@
+## 0.7.0 - Production checks
+* Setting for adding the production flag :factory:
+
 ## 0.6.0 - Kill process on exit
 * Small refactoring :cyclone:
 * Kill Meteor's process and subprocess (Mongo): Fix issue #3 :boom:

@@ -105,9 +105,10 @@ class MeteorHelperView extends View
       @velocity 'fadeIn', duration: 100, display: 'block'
       # Add the view to the current workspace
       atom.workspaceView.prependToBottom @
-      # Get the configured Meteor's path and port
+      # Get the configured Meteor's path, port and production flag
       @meteorPath = atom.config.get 'meteor-helper.meteorPath'
       @meteorPort = atom.config.get 'meteor-helper.meteorPort'
+      @meteorProd = atom.config.get 'meteor-helper.production'
       # Check if the command is installed on the system
       fs.exists @meteorPath, (isCliDefined) =>
         # Set an error message if Meteor CLI cannot be found
@@ -127,6 +128,8 @@ class MeteorHelperView extends View
               '--port'
               String @meteorPort
             ]
+          # Check if the production flag needs to be added
+          (args.push '--production') if @meteorProd
           # Tweek process path to circumvent Meteorite issue:
           # https://github.com/oortcloud/meteorite/issues/203
           process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +

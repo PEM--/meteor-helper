@@ -5,6 +5,7 @@ module.exports =
   configDefaults:
     meteorPath: '/usr/local/bin/mrt'
     meteorPort: 3000
+    production: false
 
   meteorHelperView: null
 
