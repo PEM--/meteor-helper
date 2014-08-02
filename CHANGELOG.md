@@ -1,3 +1,7 @@
+## 0.8.0 - Better theming
+* Better light and dark theme integration :lipstick:. Thank goes to [Bernardo Kuri](https://github.com/bkuri) :clap:.
+* Fix fonts setting on Linux :penguin:. Thank goes to [Bernardo Kuri](https://github.com/bkuri) :clap:.
+
 ## 0.7.0 - Production checks
 * Setting for adding the production flag :factory:
 
