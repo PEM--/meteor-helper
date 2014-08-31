@@ -1,3 +1,6 @@
+## 0.8.1 - Default for Meteor
+* As Meteorite is not anymore required, Meteor is set as the default :zap:.
+
 ## 0.8.0 - Better theming
 * Better light and dark theme integration :lipstick:. Thank goes to [Bernardo Kuri](https://github.com/bkuri) :clap:.
 * Fix fonts setting on Linux :penguin:. Thank goes to [Bernardo Kuri](https://github.com/bkuri) :clap:.

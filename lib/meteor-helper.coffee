@@ -1,9 +1,9 @@
 MeteorHelperView = require './meteor-helper-view'
 
 module.exports =
-  # Define a default installation path for Meteorite
+  # Define a default installation path for Meteor
   configDefaults:
-    meteorPath: '/usr/local/bin/mrt'
+    meteorPath: '/usr/local/bin/meteor'
     meteorPort: 3000
     production: false
 
