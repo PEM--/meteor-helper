@@ -1,7 +1,7 @@
 {View, BufferedProcess, $} = require 'atom'
 fs = require 'fs'
 path = require 'path'
-Converter = new (require 'ansi-to-html')()
+AsciiConverter = require 'ansi-to-html'
 
 module.exports =
 
@@ -89,7 +89,6 @@ class MeteorHelperView extends View
         @_killMeteor()
       , 100
     else
-      console.log 'toggle live'
       # Set an initial message before appending the panel
       @setMsg 'WAITING', 'Launching Meteor...'
       # Clear height if it has been modified formerly
@@ -100,16 +99,19 @@ class MeteorHelperView extends View
       # Add the view to the current workspace
       atom.workspaceView.prependToBottom @
       # Get the configured Meteor's path, port and production flag
-      @meteorPath = atom.config.get 'meteor-helper.meteorPath'
-      @meteorPort = atom.config.get 'meteor-helper.meteorPort'
-      @isMeteorProd = atom.config.get 'meteor-helper.production'
-      @isMeteorDebug = atom.config.get 'meteor-helper.debug'
+      meteorPath = atom.config.get 'meteor-helper.meteorPath'
+      meteorPort = atom.config.get 'meteor-helper.meteorPort'
+      isMeteorProd = atom.config.get 'meteor-helper.production'
+      isMeteorDebug = atom.config.get 'meteor-helper.debug'
       @mongoURL = atom.config.get 'meteor-helper.mongoURL'
+      consoleColor = atom.config.get 'meteor-helper.consoleColor'
+      # Create an ASCII to HTML converter
+      @converter = new AsciiConverter fg: consoleColor
       # Check if the command is installed on the system
-      fs.exists @meteorPath, (isCliDefined) =>
+      fs.exists meteorPath, (isCliDefined) =>
         # Set an error message if Meteor CLI cannot be found
         unless isCliDefined
-          @setMsg 'ERROR', "<h3>Meteor command not found: #{@meteorPath}</h3>
+          @setMsg 'ERROR', "<h3>Meteor command not found: #{meteorPath}</h3>
             <p>You can override these setting in this package preference.</p>"
           return
         # Chef if the current project owns a Meteor project
@@ -120,18 +122,18 @@ class MeteorHelperView extends View
             @setMsg 'ERROR', '<h3>No Meteor project found.</h3>'
             return
           # Check if Meteor's port need to be configure
-          args = if @meteorPort is 3000 then [] else [
+          args = if meteorPort is 3000 then [] else [
               '--port'
-              String @meteorPort
+              String meteorPort
             ]
           # Check if the production flag needs to be added
-          (args.push '--production') if @isMeteorProd
+          (args.push '--production') if isMeteorProd
           # Tweek process path to circumvent Meteorite issue:
           # https://github.com/oortcloud/meteorite/issues/203
           process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
             "latest/bin:#{process.env.PATH}"
           # Check if Meteor is in debug mode
-          process.env.NODE_OPTIONS = if @isMeteorDebug then '--debug' else ''
+          process.env.NODE_OPTIONS = if isMeteorDebug then '--debug' else ''
           # Check if Meteor should use a custom MongoDB
           if @mongoURL isnt ''
             # Set MongoDB's URL
@@ -141,7 +143,7 @@ class MeteorHelperView extends View
             delete process.env.MONGO_URL if process.env.MONGO_URL?
           # Launch Meteor
           @process = new BufferedProcess
-            command: @meteorPath
+            command: meteorPath
             args: args
             options:
               cwd: atom.project.getPath()
@@ -215,7 +217,7 @@ class MeteorHelperView extends View
     # Check for error patterns
     else if output.match @PATTERN_METEOR_ERROR then 'ERROR' else 'WAITING'
     # Display the message with the appropriare status
-    msg = "<p>#{Converter.toHtml output}</p>"
+    msg = "<p>#{@converter.toHtml output}</p>"
     @setMsg status, msg, true
 
   # Public: Add error in the pane
@@ -224,7 +226,7 @@ class MeteorHelperView extends View
   #
   # Returns: `undefined`
   paneAddErr: (output) =>
-    msg = "<p class='text-error'>#{Converter.toHtml output}</p>"
+    msg = "<p class='text-error'>#{@converter.toHtml output}</p>"
     @setMsg 'ERROR', msg, true
 
   # Public: Add exit status in the pane.

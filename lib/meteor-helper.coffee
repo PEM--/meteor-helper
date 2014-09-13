@@ -8,6 +8,7 @@ module.exports =
     production: false
     debug: false
     mongoURL: ''
+    consoleColor: '#0af'
 
   meteorHelperView: null
 

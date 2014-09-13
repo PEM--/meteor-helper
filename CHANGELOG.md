@@ -1,3 +1,6 @@
+## 0.10.0 - Theming Meteor's console.log
+* Customize your `console.log`'s color in the settings' (requested by [Andreas Fruth](http://crater.io/posts/W2Az8PQJ4aKTuf2ET)):lipstick:.
+
 ## 0.9.0 - Debug Meteor and custom MongoDB URL
 * Launch Meteor in debug mode.
 * Customize MongoDB's URL (see enhancement request #7).
