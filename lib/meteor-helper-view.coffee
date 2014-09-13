@@ -34,7 +34,7 @@ class MeteorHelperView extends View
     # Trick its importation so that it understands that jQuery is present
     window.jQuery = $
     window.velocity = require '../node_modules/velocity-animate/' + \
-      'jquery.velocity.js'
+      'velocity.min.js'
     # Pane is closed by default
     @isPaneOpened = false
     # Current pane status
@@ -46,13 +46,6 @@ class MeteorHelperView extends View
   #
   # Returns: `undefined`
   serialize: ->
-
-  # Public: Tear down any state and detach.
-  #
-  # Returns: `undefined`
-  destroy: ->
-    @detach()
-    @_killMeteor()
 
   # Public: On click, make the pane appearing or disappearing.
   #
@@ -87,15 +80,14 @@ class MeteorHelperView extends View
     if @hasParent()
       # Fade out the pane before destroying it
       @velocity 'fadeOut', duration: 100
-      # FIXME This is just a hack. It seems that 'complete' callback in
-      #  Velocity have an issue.
       setTimeout =>
         # Detach pane from the editor's view
         @detach()
-        # Kill Meteor's process if it's running
+        # Kill former process
         @_killMeteor()
       , 100
     else
+      console.log 'toggle live'
       # Set an initial message before appending the panel
       @setMsg 'WAITING', 'Launching Meteor...'
       # Clear height if it has been modified formerly
@@ -108,7 +100,8 @@ class MeteorHelperView extends View
       # Get the configured Meteor's path, port and production flag
       @meteorPath = atom.config.get 'meteor-helper.meteorPath'
       @meteorPort = atom.config.get 'meteor-helper.meteorPort'
-      @meteorProd = atom.config.get 'meteor-helper.production'
+      @isMeteorProd = atom.config.get 'meteor-helper.production'
+      @isMeteorDebug = atom.config.get 'meteor-helper.debug'
       # Check if the command is installed on the system
       fs.exists @meteorPath, (isCliDefined) =>
         # Set an error message if Meteor CLI cannot be found
@@ -129,11 +122,14 @@ class MeteorHelperView extends View
               String @meteorPort
             ]
           # Check if the production flag needs to be added
-          (args.push '--production') if @meteorProd
+          (args.push '--production') if @isMeteorProd
           # Tweek process path to circumvent Meteorite issue:
           # https://github.com/oortcloud/meteorite/issues/203
           process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
             "latest/bin:#{process.env.PATH}"
+          # Check if Meteor is in debug mode
+          console.log 'Debug?', @isMeteorDebug
+          process.env.NODE_OPTIONS = if @isMeteorDebug then '--debug' else ''
           # Launch Meteor
           @process = new BufferedProcess
             command: @meteorPath

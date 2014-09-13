@@ -1,3 +1,10 @@
+## 0.9.0 - Debug Meteor and custom MongoDB URL
+* Launch Meteor in debug mode.
+* Customize MongoDB's URL (see enhancement request #7).
+* Dependencies update:
+  * font-awesome: 4.1 to 4.2
+  * velocity-animate: 0.4.1 to 1.0.0
+
 ## 0.8.1 - Default for Meteor
 * As Meteorite is not anymore required, Meteor is set as the default :zap:.
 

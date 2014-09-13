@@ -9,11 +9,11 @@
   "repository": "https://github.com/PEM--/meteor-helper",
   "license": "MIT",
   "engines": {
-    "atom": ">0.100.0"
+    "atom": ">0.123.0"
   },
   "dependencies": {
     "ansi-to-html": "^0.2.0",
-    "font-awesome": "^4.1.0",
-    "velocity-animate": "^0.4.1"
+    "font-awesome": "^4.2.0",
+    "velocity-animate": "^1.0.0"
   }
 }

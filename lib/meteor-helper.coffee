@@ -6,6 +6,7 @@ module.exports =
     meteorPath: '/usr/local/bin/meteor'
     meteorPort: 3000
     production: false
+    debug: false
 
   meteorHelperView: null
 

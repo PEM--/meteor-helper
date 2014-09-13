@@ -17,6 +17,8 @@ In the settings, you can customize this package behavior:
 * Command and its path. The default is: `/usr/local/bin/mrt`.
 * Main listening port. The default is 3000.
 * Production flag. The default is `false`.
+* Debug flag. The default is `false`.
+* MongoDB's URL. Leave it empty to use the default embedded MongoDB in Meteor.
 
 ![Meteor.js from Atom.io](https://raw.githubusercontent.com/PEM--/meteor-helper/master/assets/capture.png)
 
