@@ -7,6 +7,7 @@ module.exports =
     meteorPort: 3000
     production: false
     debug: false
+    mongoURL: ''
 
   meteorHelperView: null
 

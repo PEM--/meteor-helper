@@ -67,10 +67,12 @@ class MeteorHelperView extends View
   _killMeteor: ->
     # Kill Meteor's process if it's running
     @process?.kill()
-    # Sometimes Mongo get stuck, force exit it
-    new BufferedProcess
-      command: 'killall'
-      args: ['mongod']
+    # Only kill Mongo if it's Meteor's default one
+    if @mongoURL is ''
+      # Sometimes Mongo get stuck, force exit it
+      new BufferedProcess
+        command: 'killall'
+        args: ['mongod']
 
   # Public: Launch or kill the pane and the Meteor process.
   #
@@ -102,6 +104,7 @@ class MeteorHelperView extends View
       @meteorPort = atom.config.get 'meteor-helper.meteorPort'
       @isMeteorProd = atom.config.get 'meteor-helper.production'
       @isMeteorDebug = atom.config.get 'meteor-helper.debug'
+      @mongoURL = atom.config.get 'meteor-helper.mongoURL'
       # Check if the command is installed on the system
       fs.exists @meteorPath, (isCliDefined) =>
         # Set an error message if Meteor CLI cannot be found
@@ -128,8 +131,14 @@ class MeteorHelperView extends View
           process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
             "latest/bin:#{process.env.PATH}"
           # Check if Meteor is in debug mode
-          console.log 'Debug?', @isMeteorDebug
           process.env.NODE_OPTIONS = if @isMeteorDebug then '--debug' else ''
+          # Check if Meteor should use a custom MongoDB
+          if @mongoURL isnt ''
+            # Set MongoDB's URL
+            process.env.MONGO_URL = @mongoURL
+          else
+            # Unset former uses
+            delete process.env.MONGO_URL if process.env.MONGO_URL?
           # Launch Meteor
           @process = new BufferedProcess
             command: @meteorPath
