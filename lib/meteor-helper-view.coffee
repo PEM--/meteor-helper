@@ -106,7 +106,7 @@ class MeteorHelperView extends View
       @mongoURL = atom.config.get 'meteor-helper.mongoURL'
       consoleColor = atom.config.get 'meteor-helper.consoleColor'
       # Create an ASCII to HTML converter
-      @converter = new AsciiConverter fg: consoleColor
+      @converter = new AsciiConverter fg: consoleColor, newline: true
       # Check if the command is installed on the system
       fs.exists meteorPath, (isCliDefined) =>
         # Set an error message if Meteor CLI cannot be found
