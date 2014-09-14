@@ -90,7 +90,8 @@ class MeteorHelperView extends View
       , 100
     else
       # Set an initial message before appending the panel
-      @setMsg 'WAITING', 'Launching Meteor...'
+      @paneIconStatus = 'WAITING'
+      @setMsg 'Launching Meteor...'
       # Clear height if it has been modified formerly
       @height 25
       @isPaneOpened = false
@@ -111,7 +112,8 @@ class MeteorHelperView extends View
       fs.exists meteorPath, (isCliDefined) =>
         # Set an error message if Meteor CLI cannot be found
         unless isCliDefined
-          @setMsg 'ERROR', "<h3>Meteor command not found: #{meteorPath}</h3>
+          @paneIconStatus = 'ERROR'
+          @setMsg "<h3>Meteor command not found: #{meteorPath}</h3>
             <p>You can override these setting in this package preference.</p>"
           return
         # Chef if the current project owns a Meteor project
@@ -119,7 +121,8 @@ class MeteorHelperView extends View
         fs.exists meteor_project_path, (isPrjCreated) =>
           # Set an error message if no Meteor project is found
           unless isPrjCreated
-            @setMsg 'ERROR', '<h3>No Meteor project found.</h3>'
+            @paneIconStatus = 'ERROR'
+            @setMsg '<h3>No Meteor project found.</h3>'
             return
           # Check if Meteor's port need to be configure
           args = if meteorPort is 3000 then [] else [
@@ -152,8 +155,6 @@ class MeteorHelperView extends View
             stdout: @paneAddInfo
             stderr: @paneAddErr
             exit: @paneAddExit
-          # Wait for the appropriate launching message
-          @setMsg 'WAITING', ''
 
   # Public: Force appearing of the pane
   #
@@ -166,23 +167,19 @@ class MeteorHelperView extends View
 
   # Public: Set message in pane's details section
   #
-  # status      - The status as String.
   # msg         - The message as String.
   # isAppended  - A flag for appending or replacing as Boolean.
   #
   # Returns: `undefined`
-  setMsg: (status, msg, isAppended = false) ->
-    switch status
+  setMsg: (msg, isAppended = false) ->
+    switch @paneIconStatus
       when 'INFO'
-        unless @paneIconStatus is 'INFO'
-          @meteorStatus.html '<i class="fa fa-check text-success"></i>'
+        @meteorStatus.html '<i class="fa fa-check text-success"></i>'
       when 'WAITING'
-        unless @paneIconStatus is 'WAITING'
-          @meteorStatus.html '<i class="fa fa-gear text-highlight faa-spin
+        @meteorStatus.html '<i class="fa fa-gear text-highlight faa-spin
             animated"></i>'
       else
-        unless @paneIconStatus is 'ERROR'
-          @meteorStatus.html '<i class="fa fa-warning faa-flash animated
+        @meteorStatus.html '<i class="fa fa-warning faa-flash animated
             text-warning"></i>'
         # When an error is detected, force appearance of the pane
         @forceAppear()
@@ -199,26 +196,45 @@ class MeteorHelperView extends View
     | remove.dep            # Removal of dependencies in Famono
     | Scan.the.folder       # End of requirements in Famono
     | Ensure.dependencies   # Generally after having fixed an error
+    | server.restarted      # Fresh code on Meteor's server
+    | restarting            # Sometimes Meteor do use this one
   ///
 
   # Patterns used for error status on Meteor CLI's output
   PATTERN_METEOR_ERROR: ///
-    [E|e]rror
+    [E|e]rror               # Basic error
+    | STDERR                # Received a console.error
+    | is.crashing           # Server crashing
+    | Exited.with.code      # Another case of server crashing
+  ///
+
+  # Pattenrs used for detecting unworthy status changes
+  # (like a simple console.log in the Meteor app)
+  PATTERN_METEOR_UNCHANGED: ///
+    I[0-9]                  # console.log statements starts with I and a date
   ///
 
   # Public: Add info in the pane and determine which type of info to add.
   #
-  # output - The Meteor's CLI output as String.
+  # outputs - The Meteor's CLI outputs as String.
   #
   # Returns: `undefined`
-  paneAddInfo: (output) =>
-    # Check for OK patterns
-    status = if output.match @PATTERN_METEOR_OK then 'INFO'
-    # Check for error patterns
-    else if output.match @PATTERN_METEOR_ERROR then 'ERROR' else 'WAITING'
-    # Display the message with the appropriare status
-    msg = "<p>#{@converter.toHtml output}</p>"
-    @setMsg status, msg, true
+  paneAddInfo: (outputs) =>
+    # Iterate over each new non blank lines
+    # and weird white space extensions in the outputs
+    tOuputs = outputs.split /\n|\ {8,}/
+    for output in tOuputs when output isnt ''
+      # spare former status
+      oldstatus = @paneIconStatus
+      # Check for OK patterns
+      @paneIconStatus = if output.match @PATTERN_METEOR_OK then 'INFO'
+      # Check for error patterns
+      else if output.match @PATTERN_METEOR_ERROR then 'ERROR'
+      else if output.match @PATTERN_METEOR_UNCHANGED then oldstatus
+      else 'WAITING'
+      # Display the message with the appropriare status
+      msg = "<p>#{@converter.toHtml output}</p>"
+      @setMsg msg, true
 
   # Public: Add error in the pane
   #
@@ -227,7 +243,8 @@ class MeteorHelperView extends View
   # Returns: `undefined`
   paneAddErr: (output) =>
     msg = "<p class='text-error'>#{@converter.toHtml output}</p>"
-    @setMsg 'ERROR', msg, true
+    @paneIconStatus = 'ERROR'
+    @setMsg msg, true
 
   # Public: Add exit status in the pane.
   #
@@ -241,4 +258,5 @@ class MeteorHelperView extends View
     # Display the exit status
     msg = "<p class='text-error'>Meteor has exited with
       status code: #{code}</p>"
-    @setMsg 'ERROR', msg, true
+    @paneIconStatus = 'ERROR'
+    @setMsg msg, true

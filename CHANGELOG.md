@@ -1,3 +1,9 @@
+## 0.11.0 - Stack trace & console.log/error readability
+* Use ansi-to-html to add new lines. Thank goes to [Joshua Horovitz](https://github.com/joshuahhh) for #10 :clap:.
+* Report Meteor's `console.error` as errors. Thus firing up the error's pane.
+* Keep previous status pane when Meteor is only reporting `console.log`.
+* Split Meteor's output when Meteor's console are not flushed (multiple console logs received on `stdout`).
+
 ## 0.10.0 - Theming Meteor's console.log
 * Customize your `console.log`'s color in the settings' (requested by [Andreas Fruth](http://crater.io/posts/W2Az8PQJ4aKTuf2ET)):lipstick:.
 
