@@ -1,14 +1,35 @@
 MeteorHelperView = require './meteor-helper-view'
 
 module.exports =
-  # Define a default installation path for Meteor
-  configDefaults:
-    meteorPath: '/usr/local/bin/meteor'
-    meteorPort: 3000
-    production: false
-    debug: false
-    mongoURL: ''
-    consoleColor: '#0af'
+  # Define configuration capabilities
+  config:
+    meteorPath:
+      type: 'string'
+      description: 'Customize Meteor\'s launching command'
+      default: '/usr/local/bin/meteor'
+    meteorPort:
+      type: 'integer'
+      default: 3000
+      description: 'Meteor\'s default port is 3000 and Mongo\'s default port \
+        is the same incremented by 1'
+    production:
+      type: 'boolean'
+      default: false
+      description: 'Used for checking production compilations'
+    debug:
+      type: 'boolean'
+      default: false
+      description: 'Add some intersting DDP logs when debugging'
+    mongoURL:
+      type: 'string'
+      default: ''
+      description: 'Default Mongo installation is generally accessible at: \
+        mongodb://localhost:27017'
+    consoleColor:
+      type: 'string'
+      default: '#0af'
+      description: 'Set the default color of your console.log \
+        in your application'
 
   meteorHelperView: null
 

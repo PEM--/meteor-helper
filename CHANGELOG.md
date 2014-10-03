@@ -1,3 +1,6 @@
+## 0.12.0 - Adaptation to new configuration scheme
+* Adapt to Atom changes on the configuration scheme: [Config API Improvements](http://blog.atom.io/2014/10/02/config-api-has-schema.html).
+
 ## 0.11.0 - Stack trace & console.log/error readability
 * Use ansi-to-html to add new lines. Thank goes to [Joshua Horovitz](https://github.com/joshuahhh) for #10 :clap:.
 * Report Meteor's `console.error` as errors. Thus firing up the error's pane.
