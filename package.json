@@ -14,6 +14,7 @@
   "dependencies": {
     "ansi-to-html": "^0.2.0",
     "font-awesome": "^4.2.0",
-    "velocity-animate": "^1.0.0"
+    "velocity-animate": "^1.1.0",
+    "q-io": "^1.11.5"
   }
 }

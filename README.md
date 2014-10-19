@@ -26,7 +26,7 @@ In the settings, you can customize this package behavior:
 * MongoDB's URL. Leave it empty to use the default embedded MongoDB in Meteor.
 * Customize the color of Meteor's `console.log`.
 
-You can override variable settings with a per project file named `mup.json` at
+You can overwrite variable settings with a per project file named `mup.json` at
 the root of your project using [Meteor Up](https://github.com/arunoda/meteor-up)
 recommendations. The following variables supersedes the settings ones:
 * `env.PORT`: Meteor's port.
@@ -38,7 +38,7 @@ recommendations. The following variables supersedes the settings ones:
 > npm install -g mup
 > mup init
 > ```
-> And add the following environment variables:
+> And add the following environment variables with your own values:
 > ```json
 >   "env": {
 >     "PORT": 3002,

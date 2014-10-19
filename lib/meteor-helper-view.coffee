@@ -1,5 +1,5 @@
 {View, BufferedProcess, $} = require 'atom'
-fs = require 'fs'
+fs = require 'q-io/fs'
 path = require 'path'
 AsciiConverter = require 'ansi-to-html'
 
@@ -68,11 +68,11 @@ class MeteorHelperView extends View
     # Kill Meteor's process if it's running
     @process?.kill()
     # Only kill Mongo if it's Meteor's default one
-    if @mongoURL is ''
-      # Sometimes Mongo get stuck, force exit it
-      new BufferedProcess
-        command: 'killall'
-        args: ['mongod']
+    return unless @mongoURL is ''
+    # Sometimes Mongo get stuck, force exit it
+    new BufferedProcess
+      command: 'killall'
+      args: ['mongod']
 
   # Public: Launch or kill the pane and the Meteor process.
   #
@@ -88,73 +88,96 @@ class MeteorHelperView extends View
         # Kill former process
         @_killMeteor()
       , 100
-    else
-      # Set an initial message before appending the panel
-      @paneIconStatus = 'WAITING'
-      @setMsg 'Launching Meteor...'
-      # Clear height if it has been modified formerly
-      @height 25
-      @isPaneOpened = false
-      # Fade the panel in
-      @velocity 'fadeIn', duration: 100, display: 'block'
-      # Add the view to the current workspace
-      atom.workspaceView.prependToBottom @
-      # Get the configured Meteor's path, port and production flag
-      meteorPath = atom.config.get 'meteor-helper.meteorPath'
-      meteorPort = atom.config.get 'meteor-helper.meteorPort'
-      isMeteorProd = atom.config.get 'meteor-helper.production'
-      isMeteorDebug = atom.config.get 'meteor-helper.debug'
-      @mongoURL = atom.config.get 'meteor-helper.mongoURL'
-      consoleColor = atom.config.get 'meteor-helper.consoleColor'
-      # Create an ASCII to HTML converter
-      @converter = new AsciiConverter fg: consoleColor, newline: true
-      # Check if the command is installed on the system
-      fs.exists meteorPath, (isCliDefined) =>
-        # Set an error message if Meteor CLI cannot be found
-        unless isCliDefined
-          @paneIconStatus = 'ERROR'
-          @setMsg "<h3>Meteor command not found: #{meteorPath}</h3>
+      return
+    # Set an initial message before appending the panel
+    @paneIconStatus = 'WAITING'
+    @setMsg 'Launching Meteor...'
+    # Clear height if it has been modified formerly
+    @height 25
+    @isPaneOpened = false
+    # Fade the panel in
+    @velocity 'fadeIn', duration: 100, display: 'block'
+    # Add the view to the current workspace
+    atom.workspaceView.prependToBottom @
+    # Get the configured Meteor's path, port and production flag
+    meteorPath = atom.config.get 'meteor-helper.meteorPath'
+    meteorPort = atom.config.get 'meteor-helper.meteorPort'
+    isMeteorProd = atom.config.get 'meteor-helper.production'
+    isMeteorDebug = atom.config.get 'meteor-helper.debug'
+    @mongoURL = atom.config.get 'meteor-helper.mongoURL'
+    consoleColor = atom.config.get 'meteor-helper.consoleColor'
+    # Create an ASCII to HTML converter
+    @converter = new AsciiConverter fg: consoleColor, newline: true
+    # Store args
+    args = []
+    # Check if the command is installed on the system
+    fs.exists meteorPath
+    .then (isCliDefined) ->
+      # Set an error message if Meteor CLI cannot be found
+      unless isCliDefined
+        throw new Error
+          status: 'ERROR'
+          msg: "<h3>Meteor command not found: #{meteorPath}</h3>
             <p>You can override these setting in this package preference.</p>"
-          return
-        # Chef if the current project owns a Meteor project
-        meteor_project_path = path.join atom.project.getPath(), '.meteor'
-        fs.exists meteor_project_path, (isPrjCreated) =>
-          # Set an error message if no Meteor project is found
-          unless isPrjCreated
-            @paneIconStatus = 'ERROR'
-            @setMsg '<h3>No Meteor project found.</h3>'
-            return
-          # Check if Meteor's port need to be configure
-          args = if meteorPort is 3000 then [] else [
-              '--port'
-              String meteorPort
-            ]
-          # Check if the production flag needs to be added
-          (args.push '--production') if isMeteorProd
-          # Tweek process path to circumvent Meteorite issue:
-          # https://github.com/oortcloud/meteorite/issues/203
-          process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
-            "latest/bin:#{process.env.PATH}"
-          # Check if Meteor is in debug mode
-          args.push 'debug' if isMeteorDebug
-          # Check if Meteor should use a custom MongoDB
-          if @mongoURL isnt ''
-            # Set MongoDB's URL
-            process.env.MONGO_URL = @mongoURL
-          else
-            # Unset former uses
-            delete process.env.MONGO_URL if process.env.MONGO_URL?
-          # Launch Meteor
-          @process = new BufferedProcess
-            command: meteorPath
-            args: args
-            options:
-              cwd: atom.project.getPath()
-              env: process.env
-              detached: true
-            stdout: @paneAddInfo
-            stderr: @paneAddErr
-            exit: @paneAddExit
+      # Check if the current project owns a Meteor project
+      meteor_project_path = path.join atom.project.getPath(), '.meteor'
+      fs.exists meteor_project_path
+    .then (isPrjCreated) =>
+      # Set an error message if no Meteor project is found
+      unless isPrjCreated
+        throw new Error
+          status: 'ERROR'
+          msg: '<h3>No Meteor project found.</h3>'
+      # Check if the production flag needs to be added
+      args.push '--production' if isMeteorProd
+      # Tweek process path to circumvent Meteorite issue:
+      # https://github.com/oortcloud/meteorite/issues/203
+      process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
+        "latest/bin:#{process.env.PATH}"
+      # Check if Meteor is in debug mode
+      args.push 'debug' if isMeteorDebug
+      # Check if Meteor should use a custom MongoDB
+      if @mongoURL isnt ''
+        # Set MongoDB's URL
+        process.env.MONGO_URL = @mongoURL
+      else
+        # Unset former uses
+        delete process.env.MONGO_URL if process.env.MONGO_URL?
+      # Check if a specific project file is available which could
+      #  overwrite settings variables
+      mup_project_path = path.join atom.project.getPath(), 'mup.json'
+      fs.exists mup_project_path
+      .then (isMupPrjCreated) ->
+        # Only overwrite settings if a `mup.json` is available
+        return unless isMupPrjCreated
+        fs.read mup_project_path
+        .then (cnt) ->
+          try
+            mup = JSON.parse cnt
+            process.env.MONGO_URL = mup.env.MONGO_URL if mup.env?.MONGO_URL?
+            meteorPort = mup.env.PORT if mup.env?.PORT?
+          catch err
+            throw new Error
+              status: 'WARNING'
+              msg: "<h3>mup.json is corrupted: #{err}. \
+                Default back to current settings.</h3>"
+    .then =>
+      # Check if Meteor's port need to be configure
+      args.push '--port', String meteorPort if meteorPort
+      # Launch Meteor
+      @process = new BufferedProcess
+        command: meteorPath
+        args: args
+        options:
+          cwd: atom.project.getPath()
+          env: process.env
+          detached: true
+        stdout: @paneAddInfo
+        stderr: @paneAddErr
+        exit: @paneAddExit
+    .fail (err) =>
+      @paneIconStatus = err.status
+      @setMsg = err.msg
 
   # Public: Force appearing of the pane
   #
