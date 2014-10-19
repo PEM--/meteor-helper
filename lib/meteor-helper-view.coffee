@@ -77,7 +77,7 @@ class MeteorHelperView extends View
   # Public: Launch or kill the pane and the Meteor process.
   #
   # Returns: `undefined`
-  toggle: ->
+  toggle: =>
     # Check if Meteor is launched
     if @hasParent()
       # Fade out the pane before destroying it
@@ -112,22 +112,18 @@ class MeteorHelperView extends View
     args = []
     # Check if the command is installed on the system
     fs.exists meteorPath
-    .then (isCliDefined) ->
+    .then (isCliDefined) =>
       # Set an error message if Meteor CLI cannot be found
       unless isCliDefined
-        throw new Error
-          status: 'ERROR'
-          msg: "<h3>Meteor command not found: #{meteorPath}</h3>
-            <p>You can override these setting in this package preference.</p>"
+        throw new Error "<h3>Meteor command not found: #{meteorPath}</h3>
+          <p>You can override these setting in this package preference.</p>"
       # Check if the current project owns a Meteor project
       meteor_project_path = path.join atom.project.getPath(), '.meteor'
       fs.exists meteor_project_path
     .then (isPrjCreated) =>
       # Set an error message if no Meteor project is found
       unless isPrjCreated
-        throw new Error
-          status: 'ERROR'
-          msg: '<h3>No Meteor project found.</h3>'
+        throw new Error '<h3>No Meteor project found.</h3>'
       # Check if the production flag needs to be added
       args.push '--production' if isMeteorProd
       # Tweek process path to circumvent Meteorite issue:
@@ -147,20 +143,19 @@ class MeteorHelperView extends View
       #  overwrite settings variables
       mup_project_path = path.join atom.project.getPath(), 'mup.json'
       fs.exists mup_project_path
-      .then (isMupPrjCreated) ->
+      .then (isMupPrjCreated) =>
         # Only overwrite settings if a `mup.json` is available
         return unless isMupPrjCreated
         fs.read mup_project_path
-        .then (cnt) ->
+        .then (cnt) =>
           try
             mup = JSON.parse cnt
             process.env.MONGO_URL = mup.env.MONGO_URL if mup.env?.MONGO_URL?
             meteorPort = mup.env.PORT if mup.env?.PORT?
           catch err
-            throw new Error
-              status: 'WARNING'
-              msg: "<h3>mup.json is corrupted: #{err}. \
-                Default back to current settings.</h3>"
+            @paneIconStatus = 'WARNING'
+            @setMsg "<h3>mup.json is corrupted: #{err}.
+              Default back to current settings.</h3>"
     .then =>
       # Check if Meteor's port need to be configure
       args.push '--port', String meteorPort if meteorPort
@@ -176,8 +171,8 @@ class MeteorHelperView extends View
         stderr: @paneAddErr
         exit: @paneAddExit
     .fail (err) =>
-      @paneIconStatus = err.status
-      @setMsg = err.msg
+      @paneIconStatus = 'ERROR'
+      @setMsg err.message
 
   # Public: Force appearing of the pane
   #
@@ -194,7 +189,7 @@ class MeteorHelperView extends View
   # isAppended  - A flag for appending or replacing as Boolean.
   #
   # Returns: `undefined`
-  setMsg: (msg, isAppended = false) ->
+  setMsg: (msg, isAppended = false) =>
     switch @paneIconStatus
       when 'INFO'
         @meteorStatus.html '<i class="fa fa-check text-success"></i>'

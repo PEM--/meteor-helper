@@ -38,7 +38,8 @@ recommendations. The following variables supersedes the settings ones:
 > npm install -g mup
 > mup init
 > ```
-> And add the following environment variables with your own values:
+> And removes the unnecessary comments and add the following environment
+> variables with your own values:
 > ```json
 >   "env": {
 >     "PORT": 3002,
