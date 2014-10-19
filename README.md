@@ -33,19 +33,18 @@ recommendations. The following variables supersedes the settings ones:
 * `env.MONGO_URL`: MongoDB's URL.
 
 > **Tips**: To create a default Meteor Up project, simply use the following
-  commands:
-```bash
-npm install -g mup
-mup init
-```
-
-And add the following environment variables:
-```json
-  "env": {
-    "PORT": 3002,
-    "MONGO_URL": "mongodb://LOGIN:PASSWORD@ACCOUNT.mongohq.com:10023/MyApp",
-  },
-```
+> commands:
+> ```bash
+> npm install -g mup
+> mup init
+> ```
+> And add the following environment variables:
+> ```json
+>   "env": {
+>     "PORT": 3002,
+>     "MONGO_URL": "mongodb://LOGIN:PASSWORD@ACCOUNT.mongohq.com:10023/MyApp",
+>   },
+> ```
 
 * More informations on my blog site :eyeglasses: : [Meteor.js from within Atom.io](http://pem-musing.blogspot.com/2014/07/meteorjs-from-within-atomio-full-stack.html)
 * Declare your bugs :bug: or enhancements :sunny: on
