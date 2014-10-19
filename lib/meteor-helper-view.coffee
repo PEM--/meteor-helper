@@ -136,7 +136,7 @@ class MeteorHelperView extends View
           process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
             "latest/bin:#{process.env.PATH}"
           # Check if Meteor is in debug mode
-          process.env.NODE_OPTIONS = if isMeteorDebug then '--debug' else ''
+          args.push 'debug' if isMeteorDebug
           # Check if Meteor should use a custom MongoDB
           if @mongoURL isnt ''
             # Set MongoDB's URL

@@ -1,3 +1,7 @@
+## 0.13.0 - Per project configuration & debug
+* Use the Meteor-0.9.4 debug capability: `meteor debug`.
+* Per project configuration uses [Meteor Up](https://github.com/arunoda/meteor-up)'s configuration file.
+
 ## 0.12.0 - Adaptation to new configuration scheme
 * Adapt to Atom changes on the configuration scheme: [Config API Improvements](http://blog.atom.io/2014/10/02/config-api-has-schema.html).
 
