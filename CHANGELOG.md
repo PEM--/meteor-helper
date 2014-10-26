@@ -1,3 +1,6 @@
+## 0.15.0 - New Meteor logo
+* Pure :lipstick:, but so nice. Logo is from [Ben Strahan](https://twitter.com/benjaminstrahan) :clap:
+
 ## 0.14.1 - Better exit support
 * Now relying on window's events for killing Meteor process.
 
