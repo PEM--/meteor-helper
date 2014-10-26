@@ -1,7 +1,8 @@
 {View, BufferedProcess, $} = require 'atom'
-fs = require 'q-io/fs'
+qfs = require 'q-io/fs'
 path = require 'path'
 AsciiConverter = require 'ansi-to-html'
+velocity = require 'velocity-animate/velocity'
 
 module.exports =
 
@@ -31,10 +32,7 @@ class MeteorHelperView extends View
   # Returns: `undefined`
   initialize: (serializeState) ->
     # Import Velocity into the main window's context
-    # Trick its importation so that it understands that jQuery is present
-    window.jQuery = $
-    window.velocity = require '../node_modules/velocity-animate/' + \
-      'velocity.min.js'
+    @velocity = velocity.bind @
     # Pane is closed by default
     @isPaneOpened = false
     # Current pane status
@@ -111,7 +109,7 @@ class MeteorHelperView extends View
     # Store args
     args = []
     # Check if the command is installed on the system
-    fs.exists meteorPath
+    qfs.exists meteorPath
     .then (isCliDefined) =>
       # Set an error message if Meteor CLI cannot be found
       unless isCliDefined
@@ -119,7 +117,7 @@ class MeteorHelperView extends View
           <p>You can override these setting in this package preference.</p>"
       # Check if the current project owns a Meteor project
       meteor_project_path = path.join atom.project.getPath(), '.meteor'
-      fs.exists meteor_project_path
+      qfs.exists meteor_project_path
     .then (isPrjCreated) =>
       # Set an error message if no Meteor project is found
       unless isPrjCreated
@@ -142,11 +140,11 @@ class MeteorHelperView extends View
       # Check if a specific project file is available which could
       #  overwrite settings variables
       mup_project_path = path.join atom.project.getPath(), 'mup.json'
-      fs.exists mup_project_path
+      qfs.exists mup_project_path
       .then (isMupPrjCreated) =>
         # Only overwrite settings if a `mup.json` is available
         return unless isMupPrjCreated
-        fs.read mup_project_path
+        qfs.read mup_project_path
         .then (cnt) =>
           try
             mup = JSON.parse cnt
