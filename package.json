@@ -1,7 +1,7 @@
 {
   "name": "meteor-helper",
   "main": "./lib/meteor-helper",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "description": "Launch Meteor from Atom.io",
   "activationEvents": [
     "meteor-helper:toggle"
