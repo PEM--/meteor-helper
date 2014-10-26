@@ -136,6 +136,12 @@ class MeteorHelperView extends View
       else
         # Unset former uses
         delete process.env.MONGO_URL if process.env.MONGO_URL?
+      if @mongoOplogURL isnt ''
+        # Set MongoDB's URL
+        process.env.MONGO_OPLOG_URL = @mongoOplogURL
+      else
+        # Unset former uses
+        delete process.env.MONGO_OPLOG_URL if process.env.MONGO_OPLOG_URL?
       # Check if a specific project file is available which could
       #  overwrite settings variables
       mup_project_path = path.join atom.project.getPath(), 'mup.json'
@@ -146,6 +152,8 @@ class MeteorHelperView extends View
           cnt = fs.readSync mup_project_path
           mup = JSON.parse cnt
           process.env.MONGO_URL = mup.env.MONGO_URL if mup.env?.MONGO_URL?
+          process.env.MONGO_OPLOG_URL = mup.env.MONGO_OPLOG_URL \
+            if mup.env?.MONGO_OPLOG_URL?
           meteorPort = mup.env.PORT if mup.env?.PORT?
         catch err
           @paneIconStatus = 'WARNING'

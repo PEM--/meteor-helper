@@ -24,6 +24,7 @@ In the settings, you can customize this package behavior:
 * Production flag. The default is `false`.
 * Debug flag. The default is `false`.
 * MongoDB's URL. Leave it empty to use the default embedded MongoDB in Meteor.
+* MongoDB's Oplog URL. Leave it empty to use the default embedded MongoDB in Meteor.
 * Customize the color of Meteor's `console.log`.
 
 You can overwrite variable settings with a per project file named `mup.json` at
@@ -31,6 +32,7 @@ the root of your project using [Meteor Up](https://github.com/arunoda/meteor-up)
 recommendations. The following variables supersedes the settings ones:
 * `env.PORT`: Meteor's port.
 * `env.MONGO_URL`: MongoDB's URL.
+* `env.MONGO_OPLOG_URL`: MongoDB's Oplog URL.
 
 > **Tips**: To create a default Meteor Up project, simply use the following
 > commands:

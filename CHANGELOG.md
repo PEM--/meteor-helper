@@ -1,3 +1,7 @@
+## 0.14.0 - Support for MONGO_OPLOG_URL
+* Remove unnecessary actions in menu.
+* Adding support for MONGO_OPLOG_URL.
+
 ## 0.13.1 - Compatibility with Atom-0.138-0
 * Better isolation of Velocity.
 * Removing q-io as it messes with the Node's module cache feature introduced in Atom-0.138.0.

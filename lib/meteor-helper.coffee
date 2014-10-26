@@ -25,6 +25,10 @@ module.exports =
       default: ''
       description: 'Default Mongo installation is generally accessible at: \
         mongodb://localhost:27017'
+    mongoOplogURL:
+      type: 'string'
+      default: ''
+      description: 'Default Mongo Oplog installation must match MONGO_URL'
     consoleColor:
       type: 'string'
       default: '#0af'

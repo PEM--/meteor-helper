@@ -8,8 +8,7 @@
     'submenu': [
       'label': 'Meteor'
       'submenu': [
-        { 'label': 'Launch', 'command': 'meteor-helper:toggle' },
-        { 'label': 'Stop', 'command': 'meteor-helper:toggle' },
+        { 'label': 'Toggle', 'command': 'meteor-helper:toggle' }
       ]
     ]
   }
