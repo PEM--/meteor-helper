@@ -1,3 +1,6 @@
+## 0.14.1 - Better exit support
+* Now relying on window's events for killing Meteor process.
+
 ## 0.14.0 - Support for MONGO_OPLOG_URL
 * Remove unnecessary actions in menu.
 * Adding support for MONGO_OPLOG_URL.

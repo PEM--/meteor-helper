@@ -39,6 +39,8 @@ class MeteorHelperView extends View
     @paneIconStatus = null
     # Display Meteor's pane
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
+    # Ensure destruction of Meteor's process
+    $(window).on 'beforeunload', => @_killMeteor()
 
   # Public: Returns an object that can be retrieved when package is activated
   #
@@ -168,7 +170,6 @@ class MeteorHelperView extends View
         options:
           cwd: atom.project.getPath()
           env: process.env
-          detached: true
         stdout: @paneAddInfo
         stderr: @paneAddErr
         exit: @paneAddExit
