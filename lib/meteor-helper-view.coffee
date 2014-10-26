@@ -1,5 +1,5 @@
 {View, BufferedProcess, $} = require 'atom'
-qfs = require 'q-io/fs'
+fs = require 'fs'
 path = require 'path'
 AsciiConverter = require 'ansi-to-html'
 velocity = require 'velocity-animate/velocity'
@@ -108,17 +108,16 @@ class MeteorHelperView extends View
     @converter = new AsciiConverter fg: consoleColor, newline: true
     # Store args
     args = []
-    # Check if the command is installed on the system
-    qfs.exists meteorPath
-    .then (isCliDefined) =>
+    try
+      # Check if the command is installed on the system
+      isCliDefined = fs.existsSync meteorPath
       # Set an error message if Meteor CLI cannot be found
       unless isCliDefined
         throw new Error "<h3>Meteor command not found: #{meteorPath}</h3>
           <p>You can override these setting in this package preference.</p>"
       # Check if the current project owns a Meteor project
       meteor_project_path = path.join atom.project.getPath(), '.meteor'
-      qfs.exists meteor_project_path
-    .then (isPrjCreated) =>
+      isPrjCreated = fs.existsSync meteor_project_path
       # Set an error message if no Meteor project is found
       unless isPrjCreated
         throw new Error '<h3>No Meteor project found.</h3>'
@@ -140,21 +139,18 @@ class MeteorHelperView extends View
       # Check if a specific project file is available which could
       #  overwrite settings variables
       mup_project_path = path.join atom.project.getPath(), 'mup.json'
-      qfs.exists mup_project_path
-      .then (isMupPrjCreated) =>
-        # Only overwrite settings if a `mup.json` is available
-        return unless isMupPrjCreated
-        qfs.read mup_project_path
-        .then (cnt) =>
-          try
-            mup = JSON.parse cnt
-            process.env.MONGO_URL = mup.env.MONGO_URL if mup.env?.MONGO_URL?
-            meteorPort = mup.env.PORT if mup.env?.PORT?
-          catch err
-            @paneIconStatus = 'WARNING'
-            @setMsg "<h3>mup.json is corrupted: #{err}.
-              Default back to current settings.</h3>"
-    .then =>
+      isMupPrjCreated = fs.existsSync mup_project_path
+      # Only overwrite settings if a `mup.json` is available
+      if isMupPrjCreated
+        try
+          cnt = fs.readSync mup_project_path
+          mup = JSON.parse cnt
+          process.env.MONGO_URL = mup.env.MONGO_URL if mup.env?.MONGO_URL?
+          meteorPort = mup.env.PORT if mup.env?.PORT?
+        catch err
+          @paneIconStatus = 'WARNING'
+          @setMsg "<h3>mup.json is corrupted: #{err}.
+            Default back to current settings.</h3>"
       # Check if Meteor's port need to be configure
       args.push '--port', String meteorPort if meteorPort
       # Launch Meteor
@@ -168,7 +164,7 @@ class MeteorHelperView extends View
         stdout: @paneAddInfo
         stderr: @paneAddErr
         exit: @paneAddExit
-    .fail (err) =>
+    catch err
       @paneIconStatus = 'ERROR'
       @setMsg err.message
 

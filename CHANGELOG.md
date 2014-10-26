@@ -1,3 +1,7 @@
+## 0.13.1 - Compatibility with Atom-0.138-0
+* Better isolation of Velocity.
+* Removing q-io as it messes with the Node's module cache feature introduced in Atom-0.138.0.
+
 ## 0.13.0 - Per project configuration & debug
 * Use the Meteor-0.9.4 debug capability: `meteor debug`.
 * Per project configuration uses [Meteor Up](https://github.com/arunoda/meteor-up)'s configuration file.
