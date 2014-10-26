@@ -27,6 +27,8 @@ In the settings, you can customize this package behavior:
 * MongoDB's Oplog URL. Leave it empty to use the default embedded MongoDB in Meteor.
 * Customize the color of Meteor's `console.log`.
 
+![Settings](https://raw.githubusercontent.com/PEM--/meteor-helper/master/assets/settings.png)
+
 You can overwrite variable settings with a per project file named `mup.json` at
 the root of your project using [Meteor Up](https://github.com/arunoda/meteor-up)
 recommendations. The following variables supersedes the settings ones:
