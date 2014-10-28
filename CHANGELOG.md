@@ -1,3 +1,6 @@
+## 0.16.0 - Customized logs
+* TODO
+
 ## 0.15.0 - New Meteor logo
 * Pure :lipstick:, but so nice. Logo is from [Ben Strahan](https://twitter.com/benjaminstrahan) :clap:
 
