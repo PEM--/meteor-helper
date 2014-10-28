@@ -28,7 +28,6 @@ In the settings, you can customize this package behavior:
 * Debug flag. The default is `false`.
 * MongoDB's URL. Leave it empty to use the default embedded MongoDB in Meteor.
 * MongoDB's Oplog URL. Leave it empty to use the default embedded MongoDB in Meteor.
-* Customize the color of Meteor's `console.log`.
 
 ![Settings](https://raw.githubusercontent.com/PEM--/meteor-helper/master/assets/settings.png)
 

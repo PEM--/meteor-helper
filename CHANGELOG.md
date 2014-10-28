@@ -1,5 +1,6 @@
-## 0.16.0 - Customized logs
-* TODO
+## 0.16.0 - Customized log colors
+* Display Meteor's log using currently selected Atom theme.
+* Remove date from logs.
 
 ## 0.15.0 - New Meteor logo
 * Pure :lipstick:, but so nice. Logo is from [Ben Strahan](https://twitter.com/benjaminstrahan) :clap:

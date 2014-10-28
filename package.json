@@ -12,7 +12,6 @@
     "atom": ">0.134.0"
   },
   "dependencies": {
-    "ansi-to-html": "^0.2.0",
     "font-awesome": "^4.2.0",
     "velocity-animate": "^1.1.0"
   }

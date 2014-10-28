@@ -1,7 +1,6 @@
 {View, BufferedProcess, $} = require 'atom'
 fs = require 'fs'
 path = require 'path'
-AsciiConverter = require 'ansi-to-html'
 velocity = require 'velocity-animate/velocity'
 
 module.exports =
@@ -74,6 +73,27 @@ class MeteorHelperView extends View
       command: 'killall'
       args: ['mongod']
 
+  # Public static: Format a Meteor log.
+  #
+  # str - The log to check and format, if necessary.
+  #
+  # Returns Either a raw string or a formated Meteor log in HTML.
+  @LogFormat = (str) ->
+    # Remove ANSI colors
+    raw = str.replace /\033\[[0-9;]*m/g, ''
+    # Check if it's common message or a Meteor log
+    pattern = ///
+      ^([I,W])                    # Only take I or W
+      \d{8}-                      # Remove the date
+      (\d{2}:\d{2}:\d{2}.\d{3})   # Get the time
+      \(\d\)\?\s(.*)              # Get the reason
+    ///
+    found = (raw.match pattern)?[1..3]
+    return raw unless found
+    # Format the Meteor log
+    css_class = if found[0] is 'I' then 'text-info' else 'text-error'
+    "<p><span class='#{css_class}'>#{found[1]}</span> #{found[2]}</p>"
+
   # Public: Launch or kill the pane and the Meteor process.
   #
   # Returns: `undefined`
@@ -105,9 +125,6 @@ class MeteorHelperView extends View
     isMeteorProd = atom.config.get 'meteor-helper.production'
     isMeteorDebug = atom.config.get 'meteor-helper.debug'
     @mongoURL = atom.config.get 'meteor-helper.mongoURL'
-    consoleColor = atom.config.get 'meteor-helper.consoleColor'
-    # Create an ASCII to HTML converter
-    @converter = new AsciiConverter fg: consoleColor, newline: true
     # Store args
     args = []
     try
@@ -254,7 +271,7 @@ class MeteorHelperView extends View
       else if output.match @PATTERN_METEOR_UNCHANGED then oldstatus
       else 'WAITING'
       # Display the message with the appropriare status
-      msg = "<p>#{@converter.toHtml output}</p>"
+      msg = "<p>#{MeteorHelperView.LogFormat output}</p>"
       @setMsg msg, true
 
   # Public: Add error in the pane
@@ -263,7 +280,7 @@ class MeteorHelperView extends View
   #
   # Returns: `undefined`
   paneAddErr: (output) =>
-    msg = "<p class='text-error'>#{@converter.toHtml output}</p>"
+    msg = "<p class='text-error'>#{MeteorHelperView.LogFormat output}</p>"
     @paneIconStatus = 'ERROR'
     @setMsg msg, true
 

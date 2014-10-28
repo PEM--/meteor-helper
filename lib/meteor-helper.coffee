@@ -29,11 +29,6 @@ module.exports =
       type: 'string'
       default: ''
       description: 'Default Mongo Oplog installation must match MONGO_URL'
-    consoleColor:
-      type: 'string'
-      default: '#0af'
-      description: 'Set the default color of your console.log \
-        in your application'
 
   meteorHelperView: null
 
