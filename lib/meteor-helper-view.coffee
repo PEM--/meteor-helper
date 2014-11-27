@@ -37,14 +37,24 @@ class MeteorHelperView extends View
     # Current pane status
     @paneIconStatus = null
     # Display Meteor's pane
+    console.log 'State', serializeState
+    console.log 'This', @
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
+    atom.workspaceView.command 'meteor-helper:reset', => @reset()
     # Ensure destruction of Meteor's process
     $(window).on 'beforeunload', => @_killMeteor()
+
+
+  # Public: Reset Meteor state and Mongo DB.
+  #
+  # Returns: `undefined`
+  reset: -> console.log 'Reset'
 
   # Public: Returns an object that can be retrieved when package is activated
   #
   # Returns: `undefined`
   serialize: ->
+    console.log 'serialize', @
 
   # Public: On click, make the pane appearing or disappearing.
   #
@@ -93,12 +103,6 @@ class MeteorHelperView extends View
     # Format the Meteor log
     css_class = if found[0] is 'I' then 'text-info' else 'text-error'
     "<p><span class='#{css_class}'>#{found[1]}</span> #{found[2]}</p>"
-
-    # Public: Reset Meteor state and Mongo DB.
-    #
-    # Returns: `undefined`
-    reset: =>
-      console.log 'Reset', @
 
   # Public: Launch or kill the pane and the Meteor process.
   #
