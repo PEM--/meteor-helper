@@ -94,6 +94,12 @@ class MeteorHelperView extends View
     css_class = if found[0] is 'I' then 'text-info' else 'text-error'
     "<p><span class='#{css_class}'>#{found[1]}</span> #{found[2]}</p>"
 
+    # Public: Reset Meteor state and Mongo DB.
+    #
+    # Returns: `undefined`
+    reset: =>
+      console.log 'Reset', @
+
   # Public: Launch or kill the pane and the Meteor process.
   #
   # Returns: `undefined`

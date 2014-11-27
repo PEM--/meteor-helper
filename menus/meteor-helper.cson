@@ -9,6 +9,7 @@
       'label': 'Meteor'
       'submenu': [
         { 'label': 'Toggle', 'command': 'meteor-helper:toggle' }
+        { 'label': 'Reset', 'command': 'meteor-helper:reset' }
       ]
     ]
   }
