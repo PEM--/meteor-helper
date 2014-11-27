@@ -1,2 +1,3 @@
 '.workspace':
   'ctrl-alt-m': 'meteor-helper:toggle'
+  'ctrl-alt-r': 'meteor-helper:reset'
