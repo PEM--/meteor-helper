@@ -1,7 +1,7 @@
 {
   "name": "meteor-helper",
   "main": "./lib/meteor-helper",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "description": "Launch Meteor from Atom.io",
   "activationEvents": [
     "meteor-helper:toggle"
@@ -9,7 +9,7 @@
   "repository": "https://github.com/PEM--/meteor-helper",
   "license": "MIT",
   "engines": {
-    "atom": ">0.134.0"
+    "atom": ">0.151.0"
   },
   "dependencies": {
     "font-awesome": "^4.2.0",

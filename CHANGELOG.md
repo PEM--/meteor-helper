@@ -1,3 +1,6 @@
+## 0.17.0 - Reset Meteor
+* Use `ctrl-alt-r` for resetting your Meteor instance.
+
 ## 0.16.0 - Customized log colors
 * Display Meteor's log using currently selected Atom theme.
 * Remove date from logs for better readability (only conserving time).
