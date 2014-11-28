@@ -39,8 +39,10 @@ class MeteorHelperView extends View
     # Display Meteor's pane
     console.log 'State', serializeState
     console.log 'This', @
+    # Register toggle and reset
     atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
     atom.workspaceView.command 'meteor-helper:reset', => @reset()
+    # TODO Check how to gray action depending on state.
     # Ensure destruction of Meteor's process
     $(window).on 'beforeunload', => @_killMeteor()
 
@@ -53,8 +55,7 @@ class MeteorHelperView extends View
   # Public: Returns an object that can be retrieved when package is activated
   #
   # Returns: `undefined`
-  serialize: ->
-    console.log 'serialize', @
+  serialize: -> console.log 'serialize', @
 
   # Public: On click, make the pane appearing or disappearing.
   #
