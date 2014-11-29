@@ -36,26 +36,16 @@ class MeteorHelperView extends View
     @isPaneOpened = false
     # Current pane status
     @paneIconStatus = null
-    # Display Meteor's pane
-    console.log 'State', serializeState
-    console.log 'This', @
     # Register toggle and reset
-    atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
     atom.workspaceView.command 'meteor-helper:reset', => @reset()
-    # TODO Check how to gray action depending on state.
+    atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
     # Ensure destruction of Meteor's process
     $(window).on 'beforeunload', => @_killMeteor()
-
-
-  # Public: Reset Meteor state and Mongo DB.
-  #
-  # Returns: `undefined`
-  reset: -> console.log 'Reset'
 
   # Public: Returns an object that can be retrieved when package is activated
   #
   # Returns: `undefined`
-  serialize: -> console.log 'serialize', @
+  serialize: ->
 
   # Public: On click, make the pane appearing or disappearing.
   #
@@ -105,6 +95,109 @@ class MeteorHelperView extends View
     css_class = if found[0] is 'I' then 'text-info' else 'text-error'
     "<p><span class='#{css_class}'>#{found[1]}</span> #{found[2]}</p>"
 
+  # Private: Display default pane.
+  #
+  # Returns: `undefined`
+  _displayPane: ->
+    # Set an initial message before appending the panel
+    @paneIconStatus = 'WAITING'
+    @setMsg 'Launching Meteor...'
+    # Clear height if it has been modified formerly
+    @height 25
+    @isPaneOpened = false
+    # Fade the panel in
+    @velocity 'fadeIn', duration: 100, display: 'block'
+    # Add the view to the current workspace
+    atom.workspaceView.prependToBottom @
+
+  # Private: Get and check settings.
+  # Throws Error in case of wrong settings.
+  # Returns: `undefined`
+  _getSettings: ->
+    # Get the configured Meteor's path, port and production flag
+    @meteorPath = atom.config.get 'meteor-helper.meteorPath'
+    @meteorPort = atom.config.get 'meteor-helper.meteorPort'
+    @isMeteorProd = atom.config.get 'meteor-helper.production'
+    @isMeteorDebug = atom.config.get 'meteor-helper.debug'
+    @mongoURL = atom.config.get 'meteor-helper.mongoURL'
+    # Check if the command is installed on the system
+    isCliDefined = fs.existsSync @meteorPath
+    # Set an error message if Meteor CLI cannot be found
+    unless isCliDefined
+      throw new Error "<h3>Meteor command not found: #{@meteorPath}</h3>
+        <p>You can override these setting in this package preference.</p>"
+    # Check if the current project owns a Meteor project
+    meteor_project_path = path.join atom.project.getPath(), '.meteor'
+    isPrjCreated = fs.existsSync meteor_project_path
+    # Set an error message if no Meteor project is found
+    unless isPrjCreated
+      throw new Error '<h3>No Meteor project found.</h3>'
+
+  # Private: Modify process env and parse mup projects.
+  #
+  # Returns: `undefined`
+  _modifyProcessEnv: ->
+    # Tweek process path to circumvent Meteorite issue:
+    # https://github.com/oortcloud/meteorite/issues/203
+    process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
+      "latest/bin:#{process.env.PATH}"
+    # Check if Meteor should use a custom MongoDB
+    if @mongoURL isnt ''
+      # Set MongoDB's URL
+      process.env.MONGO_URL = @mongoURL
+    else
+      # Unset former uses
+      delete process.env.MONGO_URL if process.env.MONGO_URL?
+    if @mongoOplogURL isnt ''
+      # Set MongoDB's URL
+      process.env.MONGO_OPLOG_URL = @mongoOplogURL
+    else
+      # Unset former uses
+      delete process.env.MONGO_OPLOG_URL if process.env.MONGO_OPLOG_URL?
+    # Check if a specific project file is available which could
+    #  overwrite settings variables
+    mup_project_path = path.join atom.project.getPath(), 'mup.json'
+    isMupPrjCreated = fs.existsSync mup_project_path
+    # Only overwrite settings if a `mup.json` is available
+    if isMupPrjCreated
+      try
+        cnt = fs.readSync mup_project_path
+        mup = JSON.parse cnt
+        process.env.MONGO_URL = mup.env.MONGO_URL if mup.env?.MONGO_URL?
+        process.env.MONGO_OPLOG_URL = mup.env.MONGO_OPLOG_URL \
+          if mup.env?.MONGO_OPLOG_URL?
+        @meteorPort = mup.env.PORT if mup.env?.PORT?
+      catch err
+        @paneIconStatus = 'WARNING'
+        @setMsg "<h3>mup.json is corrupted: #{err}.
+          Default back to current settings.</h3>"
+
+  # Public: Reset Meteor state and Mongo DB.
+  #
+  # Returns: `undefined`
+  reset: =>
+    # Check if Meteor is launched
+    unless @hasParent()
+      # Display main pane
+      @_displayPane()
+    try
+      # Get and set settings
+      @_getSettings()
+      # Modify process env and check mup files
+      @_modifyProcessEnv()
+      @setMsg 'Project reset.'
+      # Launch Meteor reset
+      new BufferedProcess
+        command: @meteorPath
+        args: ['reset']
+        options:
+          cwd: atom.project.getPath()
+          env: process.env
+      @setMsg 'Project reset.'
+    catch err
+      @paneIconStatus = 'ERROR'
+      @setMsg err.message
+
   # Public: Launch or kill the pane and the Meteor process.
   #
   # Returns: `undefined`
@@ -120,80 +213,24 @@ class MeteorHelperView extends View
         @_killMeteor()
       , 100
       return
-    # Set an initial message before appending the panel
-    @paneIconStatus = 'WAITING'
-    @setMsg 'Launching Meteor...'
-    # Clear height if it has been modified formerly
-    @height 25
-    @isPaneOpened = false
-    # Fade the panel in
-    @velocity 'fadeIn', duration: 100, display: 'block'
-    # Add the view to the current workspace
-    atom.workspaceView.prependToBottom @
-    # Get the configured Meteor's path, port and production flag
-    meteorPath = atom.config.get 'meteor-helper.meteorPath'
-    meteorPort = atom.config.get 'meteor-helper.meteorPort'
-    isMeteorProd = atom.config.get 'meteor-helper.production'
-    isMeteorDebug = atom.config.get 'meteor-helper.debug'
-    @mongoURL = atom.config.get 'meteor-helper.mongoURL'
+    # Display main pane
+    @_displayPane()
     # Store args
     args = []
     try
-      # Check if the command is installed on the system
-      isCliDefined = fs.existsSync meteorPath
-      # Set an error message if Meteor CLI cannot be found
-      unless isCliDefined
-        throw new Error "<h3>Meteor command not found: #{meteorPath}</h3>
-          <p>You can override these setting in this package preference.</p>"
-      # Check if the current project owns a Meteor project
-      meteor_project_path = path.join atom.project.getPath(), '.meteor'
-      isPrjCreated = fs.existsSync meteor_project_path
-      # Set an error message if no Meteor project is found
-      unless isPrjCreated
-        throw new Error '<h3>No Meteor project found.</h3>'
+      # Get and check settings
+      @_getSettings()
+      # Modify process env and check mup files
+      @_modifyProcessEnv()
       # Check if the production flag needs to be added
-      args.push '--production' if isMeteorProd
-      # Tweek process path to circumvent Meteorite issue:
-      # https://github.com/oortcloud/meteorite/issues/203
-      process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
-        "latest/bin:#{process.env.PATH}"
+      args.push '--production' if @isMeteorProd
       # Check if Meteor is in debug mode
-      args.push 'debug' if isMeteorDebug
-      # Check if Meteor should use a custom MongoDB
-      if @mongoURL isnt ''
-        # Set MongoDB's URL
-        process.env.MONGO_URL = @mongoURL
-      else
-        # Unset former uses
-        delete process.env.MONGO_URL if process.env.MONGO_URL?
-      if @mongoOplogURL isnt ''
-        # Set MongoDB's URL
-        process.env.MONGO_OPLOG_URL = @mongoOplogURL
-      else
-        # Unset former uses
-        delete process.env.MONGO_OPLOG_URL if process.env.MONGO_OPLOG_URL?
-      # Check if a specific project file is available which could
-      #  overwrite settings variables
-      mup_project_path = path.join atom.project.getPath(), 'mup.json'
-      isMupPrjCreated = fs.existsSync mup_project_path
-      # Only overwrite settings if a `mup.json` is available
-      if isMupPrjCreated
-        try
-          cnt = fs.readSync mup_project_path
-          mup = JSON.parse cnt
-          process.env.MONGO_URL = mup.env.MONGO_URL if mup.env?.MONGO_URL?
-          process.env.MONGO_OPLOG_URL = mup.env.MONGO_OPLOG_URL \
-            if mup.env?.MONGO_OPLOG_URL?
-          meteorPort = mup.env.PORT if mup.env?.PORT?
-        catch err
-          @paneIconStatus = 'WARNING'
-          @setMsg "<h3>mup.json is corrupted: #{err}.
-            Default back to current settings.</h3>"
+      args.push 'debug' if @isMeteorDebug
       # Check if Meteor's port need to be configure
-      args.push '--port', String meteorPort if meteorPort
+      args.push '--port', String @meteorPort if @meteorPort
       # Launch Meteor
       @process = new BufferedProcess
-        command: meteorPath
+        command: @meteorPath
         args: args
         options:
           cwd: atom.project.getPath()

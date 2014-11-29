@@ -38,7 +38,6 @@ module.exports =
   #
   # Returns: `undefined`
   activate: (state) ->
-    console.log 'Activate', state
     # Create the main's view
     @meteorHelperView = new MeteorHelperView state.meteorHelperViewState
 
