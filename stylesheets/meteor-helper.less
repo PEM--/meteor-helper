@@ -48,14 +48,18 @@
   .panel-body {
     // Avoid beeing to close to the pannel left and right border
     margin: 0 15px;
-    // Ensure that the complete content is visible as its bottom is covered
-    //  by the regular status bar.
-    padding-bottom: 30px;
     // Make its content scrollable
-    overflow: scroll;
+    overflow: auto;
     height: inherit;
     // Remove margin on h3 as they are used to display big warning text
     h3 {
+      padding-top: 2px;
+      padding-left: 4px;
+      margin: 0;
+    }
+    .meteor-details {
+      padding-top: 5px;
+      padding-left: 4px;
       margin: 0;
     }
     // Reduce margin bottom inherited from Bootstrap
