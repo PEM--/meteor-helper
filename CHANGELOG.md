@@ -1,4 +1,8 @@
-## 0.17.0 - Reset Meteor
+## 0.18.1 - Panel fixes
+* Autoscroll fixes by @nyaaao :clap:
+* Panel header size fixes :lipstick:
+
+## 0.18.0 - Reset Meteor
 * Use `ctrl-alt-r` for resetting your Meteor instance.
 
 ## 0.16.0 - Customized log colors
