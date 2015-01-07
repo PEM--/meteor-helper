@@ -3,10 +3,12 @@
   "main": "./lib/meteor-helper",
   "version": "0.18.1",
   "description": "Launch Meteor from Atom.io",
-  "activationEvents": [
-    "meteor-helper:toggle",
-    "meteor-helper:reset"
-  ],
+  "activationCommands": {
+    "atom-workspace": [
+      "meteor-helper:toggle",
+      "meteor-helper:reset"
+    ]
+  },
   "repository": "https://github.com/PEM--/meteor-helper",
   "license": "MIT",
   "engines": {
