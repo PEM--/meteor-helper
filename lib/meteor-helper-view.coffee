@@ -37,8 +37,9 @@ class MeteorHelperView extends View
     # Current pane status
     @paneIconStatus = null
     # Register toggle and reset
-    atom.workspaceView.command 'meteor-helper:reset', => @reset()
-    atom.workspaceView.command 'meteor-helper:toggle', => @toggle()
+    atom.commands.add 'atom-workspace',
+      'meteor-helper:reset': => @reset()
+      'meteor-helper:toggle': => @toggle()
     # Ensure destruction of Meteor's process
     $(window).on 'beforeunload', => @_killMeteor()
 
