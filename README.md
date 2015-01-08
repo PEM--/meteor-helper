@@ -15,8 +15,12 @@ apm install meteor-helper
 
 ## Settings
 With this package, you can:
-* Launch or kill Meteor using: **CTRL**+**ALT**+**m**
-* Reset Meteor using:  **CTRL**+**ALT**+**u**
+* Launch or kill Meteor using:
+  * On Linux and Windows: **CTRL**+**ALT**+**m**
+  * On OSX: **CMD**+**ALT**+**m**
+* Reset Meteor using:
+  * On Linux and Windows: **CTRL**+**ALT**+**u**
+  * On OSX: **CMD**+**ALT**+**m**
 * Watch the Meteor's CLI information in a dedicated pane.
 * See Meteor's status in a dedicated status bar.
 * When Meteor's status goes wrong, the pane automatically shows up and displays

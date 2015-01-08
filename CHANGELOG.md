@@ -1,5 +1,5 @@
-## 0.19.0 - Octicon fonts and deprecation warnings
-* Deprecation warning fixes by @nyaaao :clap:
+## 0.19.0 - Octicon fonts, deprecation warnings, OS specific shortcuts
+* Deprecation warning fixes and OS specific shortcuts by @nyaaao :clap:
 * Octicon icons instead of font-awesome.
 * Updates of Velocity.
 
