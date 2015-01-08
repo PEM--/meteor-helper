@@ -1,3 +1,8 @@
+## 0.19.0 - Octicon fonts and deprecation warnings
+* Deprecation warning fixes by @nyaaao :clap:
+* Octicon icons instead of font-awesome.
+* Updates of Velocity.
+
 ## 0.18.1 - Panel fixes
 * Autoscroll fixes by @nyaaao :clap:
 * Panel header size fixes :lipstick:

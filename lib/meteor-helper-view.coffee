@@ -261,12 +261,12 @@ class MeteorHelperView extends View
   setMsg: (msg, isAppended = false) =>
     switch @paneIconStatus
       when 'INFO'
-        @meteorStatus.html '<i class="fa fa-check text-success"></i>'
+        @meteorStatus.html '<i class="octicon octicon-check text-success"></i>'
       when 'WAITING'
-        @meteorStatus.html '<i class="fa fa-gear text-highlight faa-spin
-            animated"></i>'
+        @meteorStatus.html '<i class="octicon octicon-gear text-highlight
+            faa-spin animated"></i>'
       else
-        @meteorStatus.html '<i class="fa fa-warning faa-flash animated
+        @meteorStatus.html '<i class="octicon octicon-alert faa-flash animated
             text-warning"></i>'
         # When an error is detected, force appearance of the pane
         @forceAppear()
