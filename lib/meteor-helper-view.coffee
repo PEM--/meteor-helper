@@ -3,6 +3,8 @@ fs = require 'fs'
 path = require 'path'
 velocity = require 'velocity-animate/velocity'
 
+PANE_TITLE_HEIGHT = 26
+
 module.exports =
 
 # Public: Main Meteor's view that extends the View prototype.
@@ -54,7 +56,7 @@ class MeteorHelperView extends View
   #
   # Returns: `undefined`
   onClick: (evt) =>
-    height = if @isPaneOpened then 25 else 150
+    height = if @isPaneOpened then PANE_TITLE_HEIGHT else 150
     @isPaneOpened = not @isPaneOpened
     @velocity
       properties:
@@ -104,7 +106,7 @@ class MeteorHelperView extends View
     @paneIconStatus = 'WAITING'
     @setMsg 'Launching Meteor...'
     # Clear height if it has been modified formerly
-    @height 25
+    @height PANE_TITLE_HEIGHT
     @isPaneOpened = false
     # Fade the panel in
     @velocity 'fadeIn', duration: 100, display: 'block'

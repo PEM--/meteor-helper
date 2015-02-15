@@ -1,3 +1,7 @@
+## 0.20.1 - Visual fixes & Optimized Meteor logo
+* Small CSS fixes :lipstick:
+* 50% optimization on Meteor's logo.
+
 ## 0.20.0 - Fix workspace's view deprecation
 * atom.workspaceView is no longer available (#26).
 
