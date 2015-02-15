@@ -109,7 +109,7 @@ class MeteorHelperView extends View
     # Fade the panel in
     @velocity 'fadeIn', duration: 100, display: 'block'
     # Add the view to the current workspace
-    atom.workspaceView.prependToBottom @
+    atom.workspace.addBottomPanel item: @
 
   # Private: Get and check settings.
   # Throws Error in case of wrong settings.

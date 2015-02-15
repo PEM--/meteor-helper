@@ -1,3 +1,6 @@
+## 0.20.0 - Fix workspace's view deprecation
+* atom.workspaceView is no longer available (#26).
+
 ## 0.19.0 - Octicon fonts, deprecation warnings, OS specific shortcuts
 * Deprecation warning fixes and OS specific shortcuts by @nyaaao :clap:
 * Octicon icons instead of font-awesome.
