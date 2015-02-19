@@ -1,3 +1,6 @@
+## 0.21.0 - Show or hide Meteor's panne
+* Add a shortcut for showing or hiding Meteor's pane, thus avoiding mouse use.
+
 ## 0.20.1 - Visual fixes & Optimized Meteor logo
 * Small CSS fixes :lipstick:
 * 50% optimization on Meteor's logo.
