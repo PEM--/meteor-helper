@@ -3,7 +3,8 @@ fs = require 'fs'
 path = require 'path'
 velocity = require 'velocity-animate/velocity'
 
-PANE_TITLE_HEIGHT = 26
+PANE_TITLE_HEIGHT_CLOSE = 26
+PANE_TITLE_HEIGHT_OPEN = 150
 
 module.exports =
 
@@ -42,6 +43,7 @@ class MeteorHelperView extends View
     atom.commands.add 'atom-workspace',
       'meteor-helper:reset': => @reset()
       'meteor-helper:toggle': => @toggle()
+      'meteor-helper:showHide': => @showHide()
     # Ensure destruction of Meteor's process
     $(window).on 'beforeunload', => @_killMeteor()
 
@@ -55,9 +57,15 @@ class MeteorHelperView extends View
   # evt - The event as EventType.
   #
   # Returns: `undefined`
-  onClick: (evt) =>
-    height = if @isPaneOpened then PANE_TITLE_HEIGHT else 150
+  onClick: (evt) => @showHide()
+
+  # Public: Make the pane appearing or disappearing.
+  #
+  # Returns: `undefined`
+  showHide: =>
     @isPaneOpened = not @isPaneOpened
+    height = if @isPaneOpened then PANE_TITLE_HEIGHT_OPEN \
+      else PANE_TITLE_HEIGHT_CLOSE
     @velocity
       properties:
         height: height
@@ -106,7 +114,7 @@ class MeteorHelperView extends View
     @paneIconStatus = 'WAITING'
     @setMsg 'Launching Meteor...'
     # Clear height if it has been modified formerly
-    @height PANE_TITLE_HEIGHT
+    @height PANE_TITLE_HEIGHT_CLOSE
     @isPaneOpened = false
     # Fade the panel in
     @velocity 'fadeIn', duration: 100, display: 'block'
@@ -251,7 +259,7 @@ class MeteorHelperView extends View
   forceAppear: =>
     @isPaneOpened = true
     @velocity
-      properties: height: 150
+      properties: height: PANE_TITLE_HEIGHT_OPEN
       options: duration: 100
 
   # Public: Set message in pane's details section

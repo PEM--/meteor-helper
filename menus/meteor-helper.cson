@@ -10,6 +10,7 @@
       'submenu': [
         { 'label': 'Toggle', 'command': 'meteor-helper:toggle' }
         { 'label': 'Reset', 'command': 'meteor-helper:reset' }
+        { 'label': 'Show/hide', 'command': 'meteor-helper:showHide' }
       ]
     ]
   }

@@ -19,8 +19,11 @@ With this package, you can:
   * On Linux and Windows: **CTRL**+**ALT**+**m**
   * On OSX: **CMD**+**ALT**+**m**
 * Reset Meteor using:
-  * On Linux and Windows: **CTRL**+**ALT**+**u**
-  * On OSX: **CMD**+**ALT**+**m**
+  * On Linux and Windows: **CTRL**+**ALT**+**r**
+  * On OSX: **CMD**+**ALT**+**r**
+* Show/hide Meteor's panel:
+  * On Linux and Windows: **CTRL**+**ALT**+**h**
+  * On OSX: **CMD**+**ALT**+**h**
 * Watch the Meteor's CLI information in a dedicated pane.
 * See Meteor's status in a dedicated status bar.
 * When Meteor's status goes wrong, the pane automatically shows up and displays

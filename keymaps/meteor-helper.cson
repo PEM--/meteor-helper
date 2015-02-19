@@ -1,7 +1,9 @@
 '.platform-win32 atom-workspace, .platform-linux atom-workspace':
   'ctrl-alt-m': 'meteor-helper:toggle'
   'ctrl-alt-r': 'meteor-helper:reset'
+  'ctrl-alt-s': 'meteor-helper:showHide'
 
 '.platform-darwin atom-workspace':
   'cmd-alt-m': 'meteor-helper:toggle'
   'cmd-alt-r': 'meteor-helper:reset'
+  'cmd-alt-s': 'meteor-helper:showHide'

@@ -6,7 +6,8 @@
   "activationCommands": {
     "atom-workspace": [
       "meteor-helper:toggle",
-      "meteor-helper:reset"
+      "meteor-helper:reset",
+      "meteor-helper:showHide"
     ]
   },
   "repository": "https://github.com/PEM--/meteor-helper",
