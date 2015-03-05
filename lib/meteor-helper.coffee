@@ -18,27 +18,32 @@ module.exports =
       default: 3000
       description: 'Meteor\'s default port is 3000 and Mongo\'s default port \
         is the same incremented by 1'
-    production:
-      type: 'boolean'
-      default: false
-      description: 'Used for checking production compilations'
-    debug:
-      type: 'boolean'
-      default: false
-      description: 'Add some intersting DDP logs when debugging'
       order: 3
     mongoURL:
+      title: 'Mongo URL'
       type: 'string'
       default: ''
       description: 'Default Mongo installation is generally accessible at: \
         mongodb://localhost:27017'
       order: 4
     mongoOplogURL:
+      title: 'Mongo Oplog URL'
       type: 'string'
       default: ''
       description: 'Default Mongo Oplog installation must match MONGO_URL'
       order: 5
+    debug:
+      title: 'Run in Debug Mode'
+      type: 'boolean'
+      default: false
+      description: 'Run Meteor in debug mode for connecting from debugging \
+        clients, such as node-inspector (port 5858)'
       order: 6
+    production:
+      title: 'Simulate Production'
+      type: 'boolean'
+      default: false
+      description: 'Simulate running in production by minifying the JS/CSS assets'
       order: 7
 
   meteorHelperView: null
