@@ -3,6 +3,10 @@ MeteorHelperView = require './meteor-helper-view'
 module.exports =
   # Define configuration capabilities
   config:
+    meteorAppPath:
+      type: 'string'
+      description: 'The relative path to the Meteor application directory, e.g. "app"'
+      default: '.'
     meteorPath:
       type: 'string'
       description: 'Customize Meteor\'s launching command'
