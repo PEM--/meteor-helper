@@ -7,10 +7,12 @@ module.exports =
       type: 'string'
       description: 'The relative path to the Meteor application directory, e.g. "app"'
       default: '.'
+      order: 1
     meteorPath:
       type: 'string'
       description: 'Customize Meteor\'s launching command'
       default: '/usr/local/bin/meteor'
+      order: 2
     meteorPort:
       type: 'integer'
       default: 3000
@@ -24,15 +26,20 @@ module.exports =
       type: 'boolean'
       default: false
       description: 'Add some intersting DDP logs when debugging'
+      order: 3
     mongoURL:
       type: 'string'
       default: ''
       description: 'Default Mongo installation is generally accessible at: \
         mongodb://localhost:27017'
+      order: 4
     mongoOplogURL:
       type: 'string'
       default: ''
       description: 'Default Mongo Oplog installation must match MONGO_URL'
+      order: 5
+      order: 6
+      order: 7
 
   meteorHelperView: null
 
