@@ -13,9 +13,9 @@
   "repository": "https://github.com/PEM--/meteor-helper",
   "license": "MIT",
   "engines": {
-    "atom": ">0.178.0"
+    "atom": ">0.188.0"
   },
   "dependencies": {
-    "velocity-animate": "^1.2.1"
+    "velocity-animate": "^1.2.2"
   }
 }

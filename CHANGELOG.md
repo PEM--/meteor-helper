@@ -1,3 +1,7 @@
+## 0.21.1 - Styles location deprecation warning
+* Move stylesheets to styles #31 by @zimme :clap:
+* Package bumped.
+
 ## 0.21.0 - Show or hide Meteor's pane
 * Add a shortcut for showing or hiding Meteor's pane, thus avoiding mouse use.
 
