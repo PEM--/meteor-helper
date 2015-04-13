@@ -1,4 +1,5 @@
-{View, BufferedProcess, $} = require 'atom'
+{View, $} = require 'atom-space-pen-views'
+{BufferedProcess} = require 'atom'
 fs = require 'fs'
 path = require 'path'
 velocity = require 'velocity-animate/velocity'

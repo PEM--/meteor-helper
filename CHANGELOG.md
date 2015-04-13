@@ -1,3 +1,6 @@
+## 0.22.0 - Atom's View
+* Using SpacePen package for Settings issues #32
+
 ## 0.21.1 - Styles location deprecation warning
 * Move stylesheets to styles #31 by @zimme :clap:
 * Package bumped.

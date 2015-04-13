@@ -16,6 +16,7 @@
     "atom": ">0.188.0"
   },
   "dependencies": {
+    "atom-space-pen-views": "^2.0.5",
     "velocity-animate": "^1.2.2"
   }
 }
