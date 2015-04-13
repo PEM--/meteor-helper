@@ -1,7 +1,7 @@
 {
   "name": "meteor-helper",
   "main": "./lib/meteor-helper",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "private": true,
   "description": "Launch Meteor from Atom.io",
   "repository": {
@@ -19,7 +19,11 @@
   "readmeFilename": "README.md",
   "bugs": "https://github.com/PEM--/meteor-helper/issues",
   "homepage": "https://github.com/PEM--/meteor-helper",
-  "keywords": ["meteor", "launcher", "atom"],
+  "keywords": [
+    "meteor",
+    "launcher",
+    "atom"
+  ],
   "_atomModuleCache": {
     "version": 1,
     "dependencies": {
@@ -45,6 +49,5 @@
         "assets/meteor_logo.svg"
       ]
     }
-
   }
 }
