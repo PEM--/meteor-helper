@@ -2,15 +2,12 @@
   "name": "meteor-helper",
   "main": "./lib/meteor-helper",
   "version": "0.22.0",
+  "private": true,
   "description": "Launch Meteor from Atom.io",
-  "activationCommands": {
-    "atom-workspace": [
-      "meteor-helper:toggle",
-      "meteor-helper:reset",
-      "meteor-helper:showHide"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PEM--/meteor-helper"
   },
-  "repository": "https://github.com/PEM--/meteor-helper",
   "license": "MIT",
   "engines": {
     "atom": ">0.188.0"
@@ -18,5 +15,36 @@
   "dependencies": {
     "atom-space-pen-views": "^2.0.5",
     "velocity-animate": "^1.2.2"
+  },
+  "readmeFilename": "README.md",
+  "bugs": "https://github.com/PEM--/meteor-helper/issues",
+  "homepage": "https://github.com/PEM--/meteor-helper",
+  "keywords": ["meteor", "launcher", "atom"],
+  "_atomModuleCache": {
+    "version": 1,
+    "dependencies": {
+      "atom-space-pen-views": "^2.0.5",
+      "velocity-animate": "^1.2.2"
+    },
+    "extensions": {
+      ".json": [
+        "package.json"
+      ],
+      ".coffee": [
+        "lib/meteor-helper-view.coffee",
+        "lib/meteor-helper.coffee"
+      ],
+      ".less": [
+        "styles/meteor-helper.less"
+      ],
+      ".cson": [
+        "keymaps/meteor-helper.cson",
+        "menus/meteor-helper.cson"
+      ],
+      ".svg": [
+        "assets/meteor_logo.svg"
+      ]
+    }
+
   }
 }

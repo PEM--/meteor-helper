@@ -1,6 +1,6 @@
 MeteorHelperView = require './meteor-helper-view'
 
-module.exports =
+module.exports = MeteorHelper =
   # Define configuration capabilities
   config:
     meteorPath:
@@ -33,8 +33,6 @@ module.exports =
   meteorHelperView: null
 
   # Public: Activate plugin
-  #
-  # state - The state of the plugin as {[type]}.
   #
   # Returns: `undefined`
   activate: (state) ->

@@ -1,3 +1,6 @@
+## 0.23.0 - Automatic activation
+* Rely on automatic activation for Settings issues #32
+
 ## 0.22.0 - Atom's View
 * Using SpacePen package for Settings issues #32
 
