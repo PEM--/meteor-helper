@@ -127,6 +127,7 @@ class MeteorHelperView extends View
   # Returns: `undefined`
   _getSettings: ->
     # Get the configured Meteor's path, port and production flag
+    @meteorAppPath = '/'
     @meteorPath = atom.config.get 'meteor-helper.meteorPath'
     @meteorPort = atom.config.get 'meteor-helper.meteorPort'
     @isMeteorProd = atom.config.get 'meteor-helper.production'
@@ -137,13 +138,31 @@ class MeteorHelperView extends View
     # Set an error message if Meteor CLI cannot be found
     unless isCliDefined
       throw new Error "<h3>Meteor command not found: #{@meteorPath}</h3>
-        <p>You can override these setting in this package preference.</p>"
+        <p>You can override these settings in this package preference or in a custom mup.json file.</p>"
+
+    # Check for project specific settings
+    mup_project_path = path.join atom.project.getPath(), 'mup.json'
+    isMupPrjCreated = fs.existsSync mup_project_path
+
+    # Only overwrite settings if a `mup.json` is available
+    if isMupPrjCreated
+      try
+        cnt = fs.readFileSync mup_project_path
+        mup = JSON.parse cnt
+        # overwrite settings here
+        @meteorAppPath = mup.app
+      catch err
+        @paneIconStatus = 'WARNING'
+        @setMsg "<h3>mup.json is corrupted: #{err}.
+          Default back to current settings.</h3>"
+
     # Check if the current project owns a Meteor project
-    meteor_project_path = path.join atom.project.getPath(), '.meteor'
+    meteor_project_path = path.join atom.project.getPath(), @meteorAppPath, '.meteor'
     isPrjCreated = fs.existsSync meteor_project_path
+
     # Set an error message if no Meteor project is found
     unless isPrjCreated
-      throw new Error '<h3>No Meteor project found.</h3>'
+      throw new Error '<h3>No Meteor project found in:</h3><br />' + meteor_project_path
 
   # Private: Modify process env and parse mup projects.
   #
@@ -173,7 +192,7 @@ class MeteorHelperView extends View
     # Only overwrite settings if a `mup.json` is available
     if isMupPrjCreated
       try
-        cnt = fs.readSync mup_project_path
+        cnt = fs.readFileSync mup_project_path
         mup = JSON.parse cnt
         process.env.MONGO_URL = mup.env.MONGO_URL if mup.env?.MONGO_URL?
         process.env.MONGO_OPLOG_URL = mup.env.MONGO_OPLOG_URL \
@@ -203,7 +222,7 @@ class MeteorHelperView extends View
         command: @meteorPath
         args: ['reset']
         options:
-          cwd: atom.project.getPath()
+          cwd: path.join atom.project.getPath(), @meteorAppPath
           env: process.env
       @setMsg 'Project reset.'
     catch err
@@ -245,7 +264,7 @@ class MeteorHelperView extends View
         command: @meteorPath
         args: args
         options:
-          cwd: atom.project.getPath()
+          cwd: path.join atom.project.getPath(), @meteorAppPath
           env: process.env
         stdout: @paneAddInfo
         stderr: @paneAddErr
