@@ -5,7 +5,8 @@ module.exports = MeteorHelper =
   config:
     meteorAppPath:
       type: 'string'
-      description: 'The relative path to the Meteor application directory, e.g. "app"'
+      description: 'The relative path to the Meteor application \
+        directory, e.g. "app"'
       default: '.'
       order: 1
     meteorPath:
@@ -43,7 +44,8 @@ module.exports = MeteorHelper =
       title: 'Simulate Production'
       type: 'boolean'
       default: false
-      description: 'Simulate running in production by minifying the JS/CSS assets'
+      description: 'Simulate running in production by minifying the \
+        JS/CSS assets'
       order: 7
 
   meteorHelperView: null
