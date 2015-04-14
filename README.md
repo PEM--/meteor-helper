@@ -30,6 +30,7 @@ With this package, you can:
   the last CLI information.
 
 In the settings, you can customize this package behavior:
+* Meteor application path. The default is: `.`.
 * Command and its path. The default is: `/usr/local/bin/meteor`.
 * Main listening port. The default is 3000.
 * Production flag. The default is `false`.
@@ -41,10 +42,11 @@ In the settings, you can customize this package behavior:
 
 You can overwrite variable settings with a per project file named `mup.json` at
 the root of your project using [Meteor Up](https://github.com/arunoda/meteor-up)
-recommendations. The following variables supersedes the settings ones:
+recommendations. The following variables supersede the settings ones:
 * `env.PORT`: Meteor's port.
 * `env.MONGO_URL`: MongoDB's URL.
 * `env.MONGO_OPLOG_URL`: MongoDB's Oplog URL.
+* `app`: Meteor's application path.
 
 > **Tips**: To create a default Meteor Up project, simply use the following
 > commands:
@@ -65,3 +67,32 @@ recommendations. The following variables supersedes the settings ones:
 * More informations on my blog site :eyeglasses: : [Meteor.js from within Atom.io](http://pem-musing.blogspot.com/2014/07/meteorjs-from-within-atomio-full-stack.html)
 * Declare your bugs :bug: or enhancements :sunny: on
   [Github](https://github.com/PEM--/meteor-helper/issues?state=open) :octocat:
+
+## FAQ
+### How to customize log colors?
+Atom allows you to overwrite its style in a specific file named
+`~/.atom/styles.less` (more info [here](https://atom.io/docs/v0.61.0/customizing-atom)).
+
+For instance: **`~/.atom/styles.less`**
+```less
+.meteor-helper .panel-body p {
+  font-size: 14px;
+  color: red;
+}
+```
+### How to launch Meteor on Windows with an appropriate PATH?
+When using `C:\Users\userFolder\AppData\Local\.meteor\meteor.bat`, `SETLOCAL`
+to set meteor variables, the Windows command shell is pulling the normal `SET`
+variables including `PATH` which is required to point to the `system32` folder
+for `tasklist.exe`.
+
+Following the next steps should circumvent the issue:
+0. Duplicate the `meteor.bat` file - call the new copy `atommeteor.bat`.
+0. Open a command prompt, type `SET`, then hit **ENTER**. Copy the `PATH` variable
+  and paste it into the new `atommetor.bat` file, just under the `SETLOCAL`
+  line. Instead of `PATH=`, put `SET PATH=` and remember to fix the line
+  wrapping. Windows likes to line return a lot.
+3. Create a launcher in the folder for your project - call it `launcher.cmd`.
+  This file has one line: `C:\Users\userFolder\AppData\Local\.meteor\atommeteor.bat`
+
+Removing any of these steps seems to break dependencies.

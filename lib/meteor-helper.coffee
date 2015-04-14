@@ -52,6 +52,8 @@ module.exports = MeteorHelper =
 
   # Public: Activate plugin
   #
+  # state - The serialized state.
+  #
   # Returns: `undefined`
   activate: (state) ->
     # Create the main's view

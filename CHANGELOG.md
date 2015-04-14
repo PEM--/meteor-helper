@@ -1,3 +1,8 @@
+## 0.24.0 - Multiple paths
+* Better setting description from @johnschult and @nowakstefan.
+* Multiple paths from @johnschult and @nowakstefan.
+* FAQs in the README.
+
 ## 0.23.0 - Automatic activation
 * Rely on automatic activation for Settings issues #32
 

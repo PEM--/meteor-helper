@@ -147,10 +147,11 @@ class MeteorHelperView extends View
     # Only overwrite settings if a `mup.json` is available
     if isMupPrjCreated
       try
+        # @TODO Create better parsing stance
         cnt = fs.readFileSync mup_project_path
         mup = JSON.parse cnt
-        # overwrite settings here
-        @meteorAppPath = mup.app
+        # Overwrite app path if it exists
+        @meteorAppPath = mup.app if mup.app?
       catch err
         @paneIconStatus = 'WARNING'
         @setMsg "<h3>mup.json is corrupted: #{err}.
@@ -162,7 +163,7 @@ class MeteorHelperView extends View
 
     # Set an error message if no Meteor project is found
     unless isPrjCreated
-      throw new Error '<h3>No Meteor project found in:</h3><br />' + meteor_project_path
+      throw new Error "<h3>No Meteor project found in:</h3><br />#{meteor_project_path}"
 
   # Private: Modify process env and parse mup projects.
   #
