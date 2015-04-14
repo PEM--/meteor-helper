@@ -127,6 +127,7 @@ class MeteorHelperView extends View
   # Returns: `undefined`
   _getSettings: ->
     # Get the configured Meteor's path, port and production flag
+    @meteorAppPath = atom.config.get 'meteor-helper.meteorAppPath'
     @meteorPath = atom.config.get 'meteor-helper.meteorPath'
     @meteorPort = atom.config.get 'meteor-helper.meteorPort'
     @isMeteorProd = atom.config.get 'meteor-helper.production'
@@ -139,7 +140,7 @@ class MeteorHelperView extends View
       throw new Error "<h3>Meteor command not found: #{@meteorPath}</h3>
         <p>You can override these setting in this package preference.</p>"
     # Check if the current project owns a Meteor project
-    meteor_project_path = path.join atom.project.getPath(), '.meteor'
+    meteor_project_path = path.join atom.project.getPath(), @meteorAppPath, '.meteor'
     isPrjCreated = fs.existsSync meteor_project_path
     # Set an error message if no Meteor project is found
     unless isPrjCreated
@@ -245,7 +246,7 @@ class MeteorHelperView extends View
         command: @meteorPath
         args: args
         options:
-          cwd: atom.project.getPath()
+          cwd: path.join atom.project.getPath(), @meteorAppPath
           env: process.env
         stdout: @paneAddInfo
         stderr: @paneAddErr
