@@ -141,7 +141,7 @@ class MeteorHelperView extends View
         <p>You can override these settings in this package preference or in a custom mup.json file.</p>"
 
     # Check for project specific settings
-    mup_project_path = path.join atom.project.getPath(), 'mup.json'
+    mup_project_path = path.join atom.project.getPaths()[0], 'mup.json'
     isMupPrjCreated = fs.existsSync mup_project_path
 
     # Only overwrite settings if a `mup.json` is available
@@ -158,7 +158,7 @@ class MeteorHelperView extends View
           Default back to current settings.</h3>"
 
     # Check if the current project owns a Meteor project
-    meteor_project_path = path.join atom.project.getPath(), @meteorAppPath, '.meteor'
+    meteor_project_path = path.join atom.project.getPaths()[0], @meteorAppPath, '.meteor'
     isPrjCreated = fs.existsSync meteor_project_path
 
     # Set an error message if no Meteor project is found
@@ -188,7 +188,7 @@ class MeteorHelperView extends View
       delete process.env.MONGO_OPLOG_URL if process.env.MONGO_OPLOG_URL?
     # Check if a specific project file is available which could
     #  overwrite settings variables
-    mup_project_path = path.join atom.project.getPath(), 'mup.json'
+    mup_project_path = path.join atom.project.getPaths()[0], 'mup.json'
     isMupPrjCreated = fs.existsSync mup_project_path
     # Only overwrite settings if a `mup.json` is available
     if isMupPrjCreated
@@ -223,7 +223,7 @@ class MeteorHelperView extends View
         command: @meteorPath
         args: ['reset']
         options:
-          cwd: path.join atom.project.getPath(), @meteorAppPath
+          cwd: path.join atom.project.getPaths()[0], @meteorAppPath
           env: process.env
       @setMsg 'Project reset.'
     catch err
@@ -265,7 +265,7 @@ class MeteorHelperView extends View
         command: @meteorPath
         args: args
         options:
-          cwd: path.join atom.project.getPath(), @meteorAppPath
+          cwd: path.join atom.project.getPaths()[0], @meteorAppPath
           env: process.env
         stdout: @paneAddInfo
         stderr: @paneAddErr

@@ -1,5 +1,9 @@
+## 0.24.2 - Deprecation fixes
+* `getPath` deprecation.
+
 ## 0.24.1 - Deprecation fixes
-* Contributions from: @zimme and @nyaaao :clap:
+* Menu deprecation: Contributions from: @zimme and @nyaaao :clap:
+* `getPath` deprecation.
 
 ## 0.24.0 - Multiple paths
 * Better setting description from @johnschult and @nowakstefan.
