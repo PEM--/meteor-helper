@@ -1,7 +1,7 @@
 'context-menu':
   'atom-workspace': [
     'label': 'Launch Meteor'
-    'commnd': 'meteor-helper:toggle'
+    'command': 'meteor-helper:toggle'
   ]
 'menu': [
   {
