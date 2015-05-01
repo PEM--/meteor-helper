@@ -1,3 +1,6 @@
+## 0.24.1 - Deprecation fixes
+* Contributions from: @zimme and @nyaaao :clap:
+
 ## 0.24.0 - Multiple paths
 * Better setting description from @johnschult and @nowakstefan.
 * Multiple paths from @johnschult and @nowakstefan.
