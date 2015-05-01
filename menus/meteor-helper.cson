@@ -1,7 +1,8 @@
 'context-menu':
-  '.overlayer':
-    'Launch Meteor': 'meteor-helper:toggle'
-
+  'atom-workspace': [
+    'label': 'Launch Meteor'
+    'commnd': 'meteor-helper:toggle'
+  ]
 'menu': [
   {
     'label': 'Packages'
