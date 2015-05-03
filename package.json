@@ -1,7 +1,7 @@
 {
   "name": "meteor-helper",
   "main": "./lib/meteor-helper",
-  "version": "0.24.2",
+  "version": "0.24.3",
   "private": true,
   "description": "Launch Meteor from Atom.io",
   "repository": {
@@ -13,7 +13,10 @@
     "atom": ">0.195.0"
   },
   "activationCommands": {
-    "atom-workspace": ["meteor-helper:toggle", "meteor-helper:reset"]
+    "atom-workspace": [
+      "meteor-helper:toggle",
+      "meteor-helper:reset"
+    ]
   },
   "dependencies": {
     "atom-space-pen-views": "^2.0.5",
