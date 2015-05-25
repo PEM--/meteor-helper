@@ -81,18 +81,26 @@ For instance: **`~/.atom/styles.less`**
 }
 ```
 ### How to launch Meteor on Windows with an appropriate PATH?
+There are currently 2 solutions provided by Windows users (see #36). Results
+seem to rely on the version of your OS.
+#### The simple method shared by @JohnAReid
+In the settings of this plugin, just add the following:
+`C:\Users\userFolder\AppData\Local\.meteor\meteor.bat`
+where `userFolder` is your short Windows's user name.
+#### A more advanced shared by @dtrimsd
 When using `C:\Users\userFolder\AppData\Local\.meteor\meteor.bat`, `SETLOCAL`
 to set meteor variables, the Windows command shell is pulling the normal `SET`
 variables including `PATH` which is required to point to the `system32` folder
 for `tasklist.exe`.
 
 Following the next steps should circumvent the issue:
+
 0. Duplicate the `meteor.bat` file - call the new copy `atommeteor.bat`.
 0. Open a command prompt, type `SET`, then hit **ENTER**. Copy the `PATH` variable
   and paste it into the new `atommetor.bat` file, just under the `SETLOCAL`
   line. Instead of `PATH=`, put `SET PATH=` and remember to fix the line
   wrapping. Windows likes to line return a lot.
-3. Create a launcher in the folder for your project - call it `launcher.cmd`.
+0. Create a launcher in the folder for your project - call it `launcher.cmd`.
   This file has one line: `C:\Users\userFolder\AppData\Local\.meteor\atommeteor.bat`
 
 Removing any of these steps seems to break dependencies.
