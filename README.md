@@ -104,3 +104,6 @@ Following the next steps should circumvent the issue:
   This file has one line: `C:\Users\userFolder\AppData\Local\.meteor\atommeteor.bat`
 
 Removing any of these steps seems to break dependencies.
+
+### Is there a tutorial on using Meteor with Atom?
+Yes, there is: https://www.youtube.com/watch?t=101&v=QSg3mKjhiws
