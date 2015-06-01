@@ -167,7 +167,13 @@ class MeteorHelperView extends View
       throw new Error "<h3>No Meteor project found in:</h3><br />#{meteor_project_path}"
       
     # check if settings path exists
-    isSettingsPathValid = fs.existsSync @settingsPath
+    _settingsPath =
+      if @settingsPath[0] is '/'
+        @settingsPath
+      else
+        path.join atom.project.getPaths()[0], @settingsPath
+    isSettingsPathValid = fs.existsSync _settingsPath
+    console.log _settingsPath
     # Set an error if settings path is invalid
     unless isSettingsPathValid
       throw new Error "

@@ -31,7 +31,7 @@ module.exports = MeteorHelper =
       title: 'Settings Path'
       type: 'string'
       default: ''
-      description: 'Absolute path to Meteor.settings JSON file'
+      description: 'Relative or absolute path to Meteor.settings JSON file'
       order: 5
     mongoOplogURL:
       title: 'Mongo Oplog URL'
