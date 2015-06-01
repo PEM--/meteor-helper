@@ -1,3 +1,9 @@
+## 0.25.0 - Meteor settings
+From @coopermaruyama 👏
+* Add field to settings panel to specify path to settings.json file.
+* Uses absolute or relative path.
+* Ensures the file exists before launching.
+
 ## 0.24.3 - Speeds up initialization
 * #36
 

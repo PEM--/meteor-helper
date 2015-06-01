@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "engines": {
-    "atom": ">0.195.0"
+    "atom": ">0.203.0"
   },
   "activationCommands": {
     "atom-workspace": [

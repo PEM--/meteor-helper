@@ -107,3 +107,11 @@ Removing any of these steps seems to break dependencies.
 
 ### Is there a tutorial on using Meteor with Atom?
 Yes, there is: https://www.youtube.com/watch?t=101&v=QSg3mKjhiws
+
+### Settings of the package doesn't show up
+The package needs to be activated for modifying your settings. Just toggle
+Meteor and you should be fine.
+
+### I can't load my settings.json file when Meteor is launched
+If you've used a relative path to your Meteor project don't forget to
+apply the same path modifier to the path of your settings.
