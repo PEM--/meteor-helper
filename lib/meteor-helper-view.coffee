@@ -133,6 +133,7 @@ class MeteorHelperView extends View
     @isMeteorProd = atom.config.get 'meteor-helper.production'
     @isMeteorDebug = atom.config.get 'meteor-helper.debug'
     @mongoURL = atom.config.get 'meteor-helper.mongoURL'
+    @settingsPath = atom.config.get 'meteor-helper.settingsPath'
     # Check if the command is installed on the system
     isCliDefined = fs.existsSync @meteorPath
     # Set an error message if Meteor CLI cannot be found
@@ -164,6 +165,19 @@ class MeteorHelperView extends View
     # Set an error message if no Meteor project is found
     unless isPrjCreated
       throw new Error "<h3>No Meteor project found in:</h3><br />#{meteor_project_path}"
+      
+    # check if settings path exists
+    _settingsPath =
+      if @settingsPath[0] is '/'
+        @settingsPath
+      else
+        path.join atom.project.getPaths()[0], @settingsPath
+    isSettingsPathValid = fs.existsSync _settingsPath
+    # Set an error if settings path is invalid
+    unless isSettingsPathValid
+      throw new Error "
+        <h3>Unable to locate settings JSON file at: #{@settingsPath}</h3><br>
+        <p>Please make sure the file exists, or remove it from settings.</p>"
 
   # Private: Modify process env and parse mup projects.
   #
@@ -260,6 +274,8 @@ class MeteorHelperView extends View
       args.push 'debug' if @isMeteorDebug
       # Check if Meteor's port need to be configure
       args.push '--port', String @meteorPort if @meteorPort
+      # Check if settings file should be configured
+      args.push '--settings', String @settingsPath if @settingsPath
       # Launch Meteor
       @process = new BufferedProcess
         command: @meteorPath
