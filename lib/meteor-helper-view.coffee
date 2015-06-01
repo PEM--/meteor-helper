@@ -173,7 +173,6 @@ class MeteorHelperView extends View
       else
         path.join atom.project.getPaths()[0], @settingsPath
     isSettingsPathValid = fs.existsSync _settingsPath
-    console.log _settingsPath
     # Set an error if settings path is invalid
     unless isSettingsPathValid
       throw new Error "
