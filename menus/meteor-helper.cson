@@ -1,18 +1,13 @@
 'context-menu':
-  'atom-workspace': [
-    'label': 'Launch Meteor'
-    'command': 'meteor-helper:toggle'
-  ]
-'menu': [
-  {
-    'label': 'Packages'
-    'submenu': [
-      'label': 'Meteor'
-      'submenu': [
-        { 'label': 'Toggle', 'command': 'meteor-helper:toggle' }
-        { 'label': 'Reset', 'command': 'meteor-helper:reset' }
-        { 'label': 'Show/hide', 'command': 'meteor-helper:showHide' }
-      ]
+  'atom-workspace': [{label: 'Launch Meteor', command: 'meteor-helper:toggle'}]
+menu: [{
+  label: 'Packages'
+  submenu: [
+    label: 'Meteor'
+    submenu: [
+      {label: 'Toggle', command: 'meteor-helper:toggle'}
+      {label: 'Reset', command: 'meteor-helper:reset'}
+      {label: 'Show/hide', command: 'meteor-helper:showHide'}
     ]
-  }
-]
+  ]
+}]

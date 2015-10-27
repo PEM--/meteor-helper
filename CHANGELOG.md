@@ -1,3 +1,6 @@
+## 0.X.X
+* Clearer `menu.cson`.
+
 ## 0.26.0/0.27.0 - CSS & OPLOG_URL
 * Force a `top: 0` to `panel-body`: #45.
 From @jazee 👏
