@@ -50,8 +50,10 @@
     // Ensure enough space for displaying all messages
     padding-bottom: 25px;
     // Make its content scrollable
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     height: inherit;
+    min-height: 2rem;
     // Remove margin on h3 as they are used to display big warning text
     h3 {
       padding-top: 2px;

@@ -149,7 +149,6 @@ class MeteorHelperView extends View
     # Only overwrite settings if a `mup.json` is available
     if isMupPrjCreated
       try
-        # @TODO Create better parsing stance
         cnt = fs.readFileSync mup_project_path
         mup = JSON.parse cnt
         # Overwrite app path if it exists
@@ -166,8 +165,8 @@ class MeteorHelperView extends View
     # Set an error message if no Meteor project is found
     unless isPrjCreated
       throw new Error "<h3>No Meteor project found in:</h3><br />#{meteor_project_path}"
-      
-    # check if settings path exists
+
+    # Check if settings path exists
     _settingsPath =
       if @settingsPath[0] is '/'
         @settingsPath
@@ -322,8 +321,9 @@ class MeteorHelperView extends View
       @meteorDetails.append msg
     else
       @meteorDetails.html msg
+    console.log '@meteorDetails', @meteorDetails
     # Ensure scrolling
-    @meteorDetails.parent().scrollToBottom()
+    @meteorDetails.parent().css('top', 0).scrollToBottom()
 
   # Patterns used for OK status on Meteor CLI's output
   PATTERN_METEOR_OK: ///

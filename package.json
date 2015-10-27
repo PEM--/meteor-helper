@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "engines": {
-    "atom": ">0.203.0"
+    "atom": ">1.0.19"
   },
   "activationCommands": {
     "atom-workspace": [
@@ -19,8 +19,8 @@
     ]
   },
   "dependencies": {
-    "atom-space-pen-views": "^2.0.5",
-    "velocity-animate": "^1.2.2"
+    "atom-space-pen-views": "^2.1.0",
+    "velocity-animate": "^1.2.3"
   },
   "readmeFilename": "README.md",
   "bugs": "https://github.com/PEM--/meteor-helper/issues",
@@ -33,8 +33,8 @@
   "_atomModuleCache": {
     "version": 1,
     "dependencies": {
-      "atom-space-pen-views": "^2.0.5",
-      "velocity-animate": "^1.2.2"
+      "atom-space-pen-views": "^2.1.0",
+      "velocity-animate": "^1.2.3"
     },
     "extensions": {
       ".json": [

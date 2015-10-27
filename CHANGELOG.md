@@ -1,3 +1,9 @@
+## 0.25.1 - CSS & OPLOG_URL
+* Force a `top: 0` to `panel-body`: #45.
+From @jazee 👏
+* Setting for `OPLOG_URL` was defined but not used: #49.
+* Package bumped.
+
 ## 0.25.0 - Meteor settings
 From @coopermaruyama 👏
 * Add field to settings panel to specify path to settings.json file.
