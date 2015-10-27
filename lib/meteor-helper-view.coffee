@@ -133,6 +133,7 @@ class MeteorHelperView extends View
     @isMeteorProd = atom.config.get 'meteor-helper.production'
     @isMeteorDebug = atom.config.get 'meteor-helper.debug'
     @mongoURL = atom.config.get 'meteor-helper.mongoURL'
+    @mongoOplogURL = atom.config.get 'meteor-helper.mongoOplogURL'
     @settingsPath = atom.config.get 'meteor-helper.settingsPath'
     # Check if the command is installed on the system
     isCliDefined = fs.existsSync @meteorPath
