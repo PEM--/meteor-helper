@@ -1,4 +1,4 @@
-## 0.25.1 - CSS & OPLOG_URL
+## 0.26.0 - CSS & OPLOG_URL
 * Force a `top: 0` to `panel-body`: #45.
 From @jazee 👏
 * Setting for `OPLOG_URL` was defined but not used: #49.
