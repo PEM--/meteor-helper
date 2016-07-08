@@ -37,6 +37,7 @@ In the settings, you can customize this package behavior:
 * Debug flag. The default is `false`.
 * MongoDB's URL. Leave it empty to use the default embedded MongoDB in Meteor.
 * MongoDB's Oplog URL. Leave it empty to use the default embedded MongoDB in Meteor.
+* NODE_ENV environment variable. The default is `undefined`.
 
 ![Settings](https://raw.githubusercontent.com/PEM--/meteor-helper/master/assets/settings.png)
 
@@ -46,6 +47,7 @@ recommendations. The following variables supersede the settings ones:
 * `env.PORT`: Meteor's port.
 * `env.MONGO_URL`: MongoDB's URL.
 * `env.MONGO_OPLOG_URL`: MongoDB's Oplog URL.
+* `env.NODE_ENV`: The NODE_ENV environment variable.
 * `app`: Meteor's application path.
 
 > **Tips**: To create a default Meteor Up project, simply use the following
