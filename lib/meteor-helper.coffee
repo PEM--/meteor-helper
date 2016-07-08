@@ -53,6 +53,12 @@ module.exports = MeteorHelper =
       description: 'Simulate running in production by minifying the \
         JS/CSS assets'
       order: 8
+    nodeEnv:
+      title: 'NODE_ENV'
+      type: 'string'
+      default: ''
+      description: 'Set the NODE_ENV environment variable when running meteor'
+      order: 9
 
   meteorHelperView: null
 

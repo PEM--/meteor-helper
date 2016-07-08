@@ -131,6 +131,7 @@ class MeteorHelperView extends View
     @meteorPath = atom.config.get 'meteor-helper.meteorPath'
     @meteorPort = atom.config.get 'meteor-helper.meteorPort'
     @isMeteorProd = atom.config.get 'meteor-helper.production'
+    @nodeEnv = atom.config.get 'meteor-helper.nodeEnv'
     @isMeteorDebug = atom.config.get 'meteor-helper.debug'
     @mongoURL = atom.config.get 'meteor-helper.mongoURL'
     @mongoOplogURL = atom.config.get 'meteor-helper.mongoOplogURL'
@@ -153,6 +154,8 @@ class MeteorHelperView extends View
         mup = JSON.parse cnt
         # Overwrite app path if it exists
         @meteorAppPath = mup.app if mup.app?
+        # Overwrite NODE_ENV if it exists
+        @nodeEnv = mup.env.NODE_ENV if mup.env? and mup.env.NODE_ENV?
       catch err
         @paneIconStatus = 'WARNING'
         @setMsg "<h3>mup.json is corrupted: #{err}.
@@ -187,6 +190,17 @@ class MeteorHelperView extends View
     # https://github.com/oortcloud/meteorite/issues/203
     process.env.PATH = "#{process.env.HOME}/.meteor/tools/" +
       "latest/bin:#{process.env.PATH}"
+    # If NODE_ENV is specified, use that
+    if @nodeEnv? and @nodeEnv isnt ''
+      process.env.NODE_ENV = @nodeEnv
+    else
+      # Check if Meteor should use production mode
+      if @isMeteorProd
+        # Set NODE_ENV
+        process.env.NODE_ENV = 'production'
+      else
+        # Unset former uses
+        delete process.env.NODE_ENV if process.env.NODE_ENV?
     # Check if Meteor should use a custom MongoDB
     if @mongoURL isnt ''
       # Set MongoDB's URL
