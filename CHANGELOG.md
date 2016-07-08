@@ -1,6 +1,6 @@
-## 0.X.X
+## 0.28.0
 * Clearer `menu.cson`.
-* Ability to set the NODE_ENV in settings or mup.json
+* Ability to set the NODE_ENV in settings or mup.json: Thank goes to [Jaco Swarts](https://github.com/productiveme) :clap:.
 
 ## 0.26.0/0.27.0 - CSS & OPLOG_URL
 * Force a `top: 0` to `panel-body`: #45.

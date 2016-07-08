@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "engines": {
-    "atom": ">1.0.18"
+    "atom": ">=1.8.0"
   },
   "activationCommands": {
     "atom-workspace": [
@@ -19,7 +19,7 @@
     ]
   },
   "dependencies": {
-    "atom-space-pen-views": "^2.1.0",
+    "atom-space-pen-views": "^2.2.0",
     "velocity-animate": "^1.2.3"
   },
   "readmeFilename": "README.md",
@@ -33,7 +33,7 @@
   "_atomModuleCache": {
     "version": 1,
     "dependencies": {
-      "atom-space-pen-views": "^2.1.0",
+      "atom-space-pen-views": "^2.2.0",
       "velocity-animate": "^1.2.3"
     },
     "extensions": {
