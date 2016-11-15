@@ -93,7 +93,7 @@ class MeteorHelperView extends View
   # Returns Either a raw string or a formated Meteor log in HTML.
   @LogFormat = (str) ->
     # Remove ANSI colors
-    raw = str.replace /\033\[[0-9;]*m/g, ''
+    raw = str.replace /\\033\\[[0-9;]*m/g, ''
     # Check if it's common message or a Meteor log
     pattern = ///
       ^([I,W])                    # Only take I or W

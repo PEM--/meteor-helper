@@ -1,3 +1,6 @@
+## 0.29.0 - Fix for strict mode
+* Fix for Atom 1.12.X as strict mode has been activated
+
 ## 0.28.0
 * Clearer `menu.cson`.
 * Ability to set the NODE_ENV in settings or mup.json: Thank goes to [Jaco Swarts](https://github.com/productiveme) :clap:.
